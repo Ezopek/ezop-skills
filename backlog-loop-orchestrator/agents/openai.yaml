@@ -1,6 +1,0 @@
-interface:
-  display_name: "Backlog Loop Orchestrator"
-  short_description: "Run long autonomous backlog delivery loops"
-  default_prompt: "Use $backlog-loop-orchestrator to run a long backlog loop for `docs/operations/ai-assisted-development-backlog.md`, read `AGENTS.md` and related docs first, keep an append-only log in `.codex/ai-assisted-backlog-loop.md`, and work one bounded slice at a time."
-policy:
-  allow_implicit_invocation: false
