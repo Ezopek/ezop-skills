@@ -178,8 +178,8 @@ well under the size limit and covers the most common daily tasks:
 
 1. Open the project folder in VS Code (`File → Open Folder`)
 2. Open Copilot Chat (sidebar or `Ctrl+Alt+I`)
-3. Type: `Use $pr-reviewer to review the last commit`
-4. Copilot should respond by following the reviewer workflow — asking about scope, listing findings by severity
+3. Type: `Review the last commit — findings in severity order`
+4. Copilot should recognize the intent, activate the pr-reviewer workflow, and list findings by severity without you naming the skill
 
 **If Copilot ignores the instructions:**
 
@@ -197,25 +197,33 @@ To verify:
 
 1. Open the project in IntelliJ
 2. Open Copilot Chat (`Tools → GitHub Copilot → Open GitHub Copilot Chat`)
-3. Type: `Use $delivery-planner to create a backlog for feature X`
+3. Type: `Create a backlog for feature X`
+4. Copilot should recognize the intent, activate the delivery-planner workflow, and ask the appropriate planning questions
 
 ---
 
-### How to invoke skills in Copilot Chat
+### How skills activate
 
-Reference skills by name in your message. Copilot will follow the corresponding workflow:
+You do not need to name the skill. Just describe what you want — Copilot reads the trigger mapping in the instructions and activates the right workflow automatically.
 
 ```
-Use $delivery-planner to create a backlog for the auth migration.
+Create a backlog for the auth migration, split into bounded slices.
+→ Copilot activates: delivery-planner
 
-$pr-reviewer — review this PR, findings in severity order.
+Review this PR — findings in severity order.
+→ Copilot activates: pr-reviewer
 
-Run $security-scanner on the current codebase.
+Scan the codebase for security issues before the release.
+→ Copilot activates: security-scanner
 
-Use $repo-drift-auditor before we resume the backlog loop.
+Check whether our docs still match the code before we resume work.
+→ Copilot activates: repo-drift-auditor
 
-feature-dev implement a rate-limiting middleware for the API.
+We need to implement a rate-limiting middleware for the API.
+→ Copilot activates: feature-dev
 ```
+
+Explicit invocation by skill name (`$delivery-planner`, `$pr-reviewer`, etc.) also works as a fallback if Copilot does not pick up the intent automatically.
 
 ---
 
