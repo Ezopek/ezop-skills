@@ -157,18 +157,64 @@ Explicit invocation as a slash command (`/delivery-planner`, `/pr-reviewer`, etc
 
 ### Personal skills (cross-project)
 
-If you want certain skills available in **all** your projects without copying them into each repo, place them in your personal skills directory:
+If you want certain skills available in **all** your projects without copying them into each repo, place them in your personal skills directory. Copilot supports three equivalent paths:
+
+| Path | Notes |
+|---|---|
+| `~/.copilot/skills/` | Primary — works in VS Code |
+| `~/.agents/skills/` | Works in VS Code and JetBrains (recommended for IntelliJ users) |
+| `~/.claude/skills/` | Works in Claude Code |
+
+On Windows `~` is `%USERPROFILE%` (e.g. `C:\Users\YourName\`).
+
+> **⚠ JetBrains / IntelliJ caveat:** As of early 2026, the IntelliJ Copilot plugin [does not discover skills from `~/.copilot/skills/`](https://github.com/microsoft/copilot-intellij-feedback/issues/1517). Use `~/.agents/skills/` instead — this path works in both VS Code and JetBrains.
+
+**Windows (PowerShell):**
 
 ```powershell
-# Windows — personal skills directory
-$skillsDir = "$env:USERPROFILE\.copilot\skills"
+# Use .agents for maximum compatibility (VS Code + IntelliJ)
+$skillsDir = "$env:USERPROFILE\.agents\skills"
 New-Item -ItemType Directory -Force -Path $skillsDir
 
-# Copy a skill for personal use
-Copy-Item -Recurse -Force "C:\tools\ezop-skills\pr-reviewer" "$skillsDir\pr-reviewer"
+# Copy all skills at once
+$source = "C:\tools\ezop-skills"
+Get-ChildItem -Path $source -Directory | Where-Object {
+    Test-Path (Join-Path $_.FullName "SKILL.md")
+} | ForEach-Object {
+    Copy-Item -Path $_.FullName -Destination "$skillsDir\$($_.Name)" -Recurse -Force
+}
+```
+
+**Linux / macOS:**
+
+```bash
+# Use .agents for maximum compatibility
+skills_dir=~/.agents/skills
+mkdir -p "$skills_dir"
+
+for skill in ~/repos/ezop-skills/*/; do
+  [ -f "${skill}SKILL.md" ] && cp -r "$skill" "$skills_dir/"
+done
 ```
 
 Personal skills are visible only to you and are not shared with the team.
+
+#### Self-diagnosis — verify Copilot sees your skills
+
+After copying skills, paste this prompt into Copilot Chat (Agent mode) to check what the agent actually sees:
+
+```
+List all agent skills you currently have access to.
+For each skill show: name, source location (repo or personal directory), and
+whether it loaded successfully. If you see zero personal skills, say so
+explicitly and suggest what might be wrong.
+```
+
+If personal skills are missing, check:
+- **VS Code:** the directory exists at `~/.agents/skills/<skill-name>/SKILL.md` (or `~/.copilot/skills/`)
+- **IntelliJ:** the directory exists at `~/.agents/skills/<skill-name>/SKILL.md` (not `~/.copilot/skills/`)
+- Each skill folder contains a `SKILL.md` with valid `name` and `description` in YAML frontmatter
+- You restarted the IDE after adding new skills
 
 ---
 
@@ -192,7 +238,7 @@ Beyond skills, Copilot supports several other customization primitives that can 
 cd C:\tools\ezop-skills
 git pull
 
-# Re-copy into your project
+# Re-copy into your project (repo-level)
 cd C:\projects\my-project
 $source = "C:\tools\ezop-skills"
 Get-ChildItem -Path $source -Directory | Where-Object {
@@ -203,6 +249,14 @@ Get-ChildItem -Path $source -Directory | Where-Object {
 
 git add .github\skills
 git commit -m "update AI development skills"
+
+# Re-copy personal skills (if you use them)
+$skillsDir = "$env:USERPROFILE\.agents\skills"
+Get-ChildItem -Path $source -Directory | Where-Object {
+    Test-Path (Join-Path $_.FullName "SKILL.md")
+} | ForEach-Object {
+    Copy-Item -Path $_.FullName -Destination "$skillsDir\$($_.Name)" -Recurse -Force
+}
 ```
 
 ---
@@ -308,6 +362,11 @@ $cicd-guardian             ← (optional) after pipeline changes
 - In VS Code: `Ctrl+,` → search `useInstructionFiles` → confirm it is enabled
 - The `.github` folder must be at the repository root, not inside a subdirectory
 - Try explicit invocation: type `/<skill-name>` (e.g. `/pr-reviewer`) to verify Copilot sees the skill
+
+**Personal skills not visible in IntelliJ**
+- IntelliJ does not discover skills from `~/.copilot/skills/` — use `~/.agents/skills/` instead
+- Restart the IDE after copying skills to the personal directory
+- Run the self-diagnosis prompt (see "Personal skills" section above) to confirm what the agent sees
 
 **Copilot ignores `copilot-instructions.md`**
 - The file must be at the exact path `.github/copilot-instructions.md`
