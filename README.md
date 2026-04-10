@@ -73,9 +73,9 @@ Each skill can be used standalone — the full pipeline is not required.
 
 See **[INSTALLATION.md](INSTALLATION.md)** for step-by-step setup instructions:
 
-- GitHub Copilot in VS Code / IntelliJ on Windows
-- Claude Code on Linux / macOS / WSL
-- Ready-made system prompt to paste into `.github/copilot-instructions.md`, `CLAUDE.md`, or `AGENTS.md`
+- **GitHub Copilot** — copy skill folders to `.github/skills/` in your project (native Agent Skills support)
+- **Claude Code** — copy to `~/.claude/skills/` or install via plugins
+- Works with VS Code, IntelliJ, and any tool that supports the [Agent Skills standard](https://agentskills.io)
 
 ---
 

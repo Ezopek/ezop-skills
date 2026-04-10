@@ -5,15 +5,21 @@ This guide covers two environments:
 - **GitHub Copilot** in VS Code or IntelliJ on Windows — primary audience, most detailed
 - **Claude Code** on Linux / macOS / WSL — personal / secondary setup
 
+Requires **Copilot Business** or **Copilot Enterprise** (agent skills, custom instructions, and agent mode are available on all paid plans including Pro).
+
 ---
 
 ## GitHub Copilot (Windows — VS Code / IntelliJ)
 
-GitHub Copilot does not have a plugin system. Skills are activated by pasting their content into an instructions file that Copilot reads automatically on every conversation. No installation is needed — only a file in the right place.
+Copilot supports **Agent Skills** — folder-based capability packages that Copilot discovers and activates automatically. Each skill in this repo is already in the right format (`SKILL.md` with `name` and `description` frontmatter). You copy skill folders into your project's `.github/skills/` directory, and Copilot loads them on demand when the user's prompt matches the skill's description.
+
+This follows the [Agent Skills open standard](https://agentskills.io), supported by Copilot, Claude Code, and other LLM agents.
 
 ### How it works
 
-Copilot reads `.github/copilot-instructions.md` from the root of the open repository. Whatever you put in that file becomes part of Copilot's context in every Chat session for that project. Both VS Code and IntelliJ respect this file.
+Copilot reads skill folders from `.github/skills/<skill-name>/SKILL.md` in your repository. Each skill has a `description` field in its frontmatter — Copilot uses this to decide whether to activate the skill based on the user's prompt. Skills can also be invoked manually as `/<skill-name>` slash commands in Copilot Chat.
+
+Skills are loaded **on demand** (only when relevant to the current prompt), so there are no size limit concerns — unlike `copilot-instructions.md`, which is injected into every conversation.
 
 ### Step 1 — Get a copy of this repo
 
@@ -23,188 +29,113 @@ Download a ZIP or clone the repo somewhere on your Windows machine. You do **not
 
 1. Open the repo page on GitHub
 2. Click **Code → Download ZIP**
-3. Extract it, e.g. to `C:\tools\openai-skills\`
+3. Extract it, e.g. to `C:\tools\ezop-skills\`
 
 **Option B — Clone with git (PowerShell)**
 
 ```powershell
-git clone https://github.com/ezopek/openai-skills.git C:\tools\openai-skills
+git clone https://github.com/ezopek/ezop-skills.git C:\tools\ezop-skills
 ```
 
 ---
 
-### Step 2 — Create the instructions file in your project
+### Step 2 — Copy skills into your project
 
-Open **your project** in File Explorer. Check whether a `.github` folder exists at the root. If not, create it.
-
-In File Explorer you cannot create a folder named `.github` directly — use PowerShell:
+Create `.github/skills/` in your project and copy the skill folders you want:
 
 ```powershell
 # Run this in PowerShell, from your project root
-# Replace C:\projects\my-project with your actual project path
 cd C:\projects\my-project
-New-Item -ItemType Directory -Force -Path .github
-New-Item -ItemType File    -Force -Path .github\copilot-instructions.md
+
+# Create the skills directory
+New-Item -ItemType Directory -Force -Path .github\skills
+
+# Copy all skills at once
+$source = "C:\tools\ezop-skills"
+Get-ChildItem -Path $source -Directory | Where-Object {
+    Test-Path (Join-Path $_.FullName "SKILL.md")
+} | ForEach-Object {
+    Copy-Item -Path $_.FullName -Destination ".github\skills\$($_.Name)" -Recurse -Force
+}
 ```
 
-Then open `.github\copilot-instructions.md` in VS Code or any text editor.
+Or copy individual skills:
+
+```powershell
+# Copy only the skills you need
+Copy-Item -Recurse -Force "C:\tools\ezop-skills\pr-reviewer" ".github\skills\pr-reviewer"
+Copy-Item -Recurse -Force "C:\tools\ezop-skills\delivery-planner" ".github\skills\delivery-planner"
+Copy-Item -Recurse -Force "C:\tools\ezop-skills\security-scanner" ".github\skills\security-scanner"
+```
+
+Commit the skills so all team members have access:
+
+```powershell
+git add .github\skills
+git commit -m "add AI development skills for Copilot"
+```
 
 ---
 
-### Step 3 — Paste the system prompt
+### Step 3 — (Optional) Add a trigger guide to copilot-instructions.md
 
-Copy the block below and paste it into `.github\copilot-instructions.md`. This is the minimum required — Copilot will understand all skills and use them automatically.
+The skills work without any additional configuration — Copilot reads each skill's `description` and activates it automatically. However, if you want to add a routing guide so Copilot has an overview of all available skills, you can add it to `.github/copilot-instructions.md`:
+
+```powershell
+New-Item -ItemType Directory -Force -Path .github
+New-Item -ItemType File -Force -Path .github\copilot-instructions.md
+```
+
+Paste this into `.github/copilot-instructions.md`:
 
 ```markdown
-## AI Development Skills
-
-You have access to the following skills. When a user request matches a skill's purpose,
-activate that skill: follow its workflow, ask the questions it prescribes, and produce
-the outputs it defines. Do not approximate — follow the workflow exactly.
-
-### Planning and execution pipeline
-
-- **$agent-ready-docs** — create or update AGENTS.md, README.md, and operational
-  docs so this repo is safe and clear for AI agents to work in
-- **$delivery-planner** — create a roadmap, backlog, or feature implementation plan
-  that is repo-grounded and executable by AI agents in bounded slices
-- **$backlog-loop-orchestrator** — run an autonomous backlog loop: plan one slice,
-  implement it, verify, commit, and repeat until all items are done
-- **$slice-reviewer** — review one completed implementation slice against its
-  approved plan; report findings in severity order; end with accept / needs-fix / blocked
-- **$repo-drift-auditor** — audit whether docs, backlog items, workflow descriptions,
-  and commands still match actual code and repo state
-
-### Quality and security
-
-- **$pr-reviewer** — general-purpose PR / MR code quality review: correctness,
-  safety, performance, maintainability, test coverage
-- **$cicd-guardian** — audit, improve, and secure CI/CD pipelines: correctness,
-  security, efficiency, and compliance with standards
-- **$security-scanner** — deep security audit: code vulnerabilities, dependency
-  risks, exposed secrets, insecure config, infra weaknesses
-
-### Feature development
-
-- **feature-dev** — full guided feature development: discover the codebase, clarify
-  requirements, design architecture options, implement, then review quality
-
-> **Note for Copilot users:** In Claude Code, `feature-dev` dispatches parallel sub-agents
-> for codebase exploration and architecture design. In Copilot, the same workflow runs
-> as a guided multi-phase conversation — Copilot explores the codebase, clarifies
-> requirements, proposes architecture options, and reviews quality itself, in sequence.
-> The phases and outputs are identical; only the parallel execution is not available.
-
----
-
-### When to use which skill
+## When to use which skill
 
 | User says... | Use |
 |---|---|
-| "create a plan / backlog / roadmap" | `$delivery-planner` |
-| "run the backlog / continue the loop" | `$backlog-loop-orchestrator` |
-| "review this PR / review the code" | `$pr-reviewer` |
-| "did we follow the plan / review the slice" | `$slice-reviewer` |
-| "update AGENTS.md / update docs" | `$agent-ready-docs` |
-| "scan for security / check for vulnerabilities" | `$security-scanner` |
-| "audit CI/CD / fix the pipeline" | `$cicd-guardian` |
-| "check if docs are stale / drift audit" | `$repo-drift-auditor` |
-| "implement feature X" | `feature-dev` |
-
+| "create a plan / backlog / roadmap" | `/delivery-planner` |
+| "run the backlog / continue the loop" | `/backlog-loop-orchestrator` |
+| "review this PR / review the code" | `/pr-reviewer` |
+| "did we follow the plan / review the slice" | `/slice-reviewer` |
+| "update AGENTS.md / update docs" | `/agent-ready-docs` |
+| "scan for security / check for vulnerabilities" | `/security-scanner` |
+| "audit CI/CD / fix the pipeline" | `/cicd-guardian` |
+| "check if docs are stale / drift audit" | `/repo-drift-auditor` |
 ```
 
-Commit this file so all team members share the same skill context:
-
-```powershell
-git add .github\copilot-instructions.md
-git commit -m "add Copilot skill instructions"
-```
+This is lightweight (~1 KB) and complements the full skill definitions in `.github/skills/`. Keep `copilot-instructions.md` short — it is injected into **every** Copilot conversation, so use it only for always-on context like coding standards and routing guides, not full skill workflows.
 
 ---
 
-### Step 4 — (Optional) Add full skill detail
+### Step 4 — Verify it works
 
-The system prompt from Step 3 is enough for Copilot to activate and follow each skill at a high level. If you want Copilot to apply a skill's complete workflow — all questions, output sections, and quality gates — paste the full `SKILL.md` content below the system prompt.
-
-**Size limit:** Keep `.github\copilot-instructions.md` under approximately 8 000 tokens (~32 KB). All 8 SKILL.md files combined are ~90 KB — pasting all of them will exceed the limit and content will be silently truncated. **Paste only the 1–3 skills your team uses most.**
-
-**Example — adding the PR reviewer in full:**
-
-1. Open `C:\tools\openai-skills\pr-reviewer\SKILL.md`
-2. Copy the entire contents
-3. Append to `.github\copilot-instructions.md` after the system prompt:
-
-```markdown
----
-
-<!-- Full workflow for $pr-reviewer -->
-
-<paste SKILL.md content here>
-```
-
-**For the `feature-dev` workflow**, paste the file at:
-
-```
-C:\tools\openai-skills\community\feature-dev\commands\feature-dev.md
-```
-
-This file describes the 7-phase guided workflow (Discovery → Codebase Exploration →
-Clarifying Questions → Architecture Design → Implementation → Quality Review → Summary).
-In Copilot it runs sequentially in a single chat — Copilot reads the codebase itself
-instead of dispatching parallel agents, but follows the same phases, asks the same
-questions, and produces the same outputs.
-
-```markdown
----
-
-<!-- Full workflow for feature-dev -->
-
-<paste community/feature-dev/commands/feature-dev.md content here>
-```
-
-**Recommended combination** — system prompt (Step 3) + these two full workflows fits
-well under the size limit and covers the most common daily tasks:
-
-| File to paste | Size | Covers |
-|---|---|---|
-| system prompt block (Step 3) | ~2 KB | all 8 skills, trigger routing |
-| `pr-reviewer/SKILL.md` | ~10 KB | detailed PR review workflow |
-| `community/feature-dev/commands/feature-dev.md` | ~4 KB | feature development workflow |
-| **Total** | **~16 KB** | well within the ~32 KB limit |
-
----
-
-### Step 5 — Verify it works in VS Code
+**VS Code:**
 
 1. Open the project folder in VS Code (`File → Open Folder`)
 2. Open Copilot Chat (sidebar or `Ctrl+Alt+I`)
-3. Type: `Review the last commit — findings in severity order`
-4. Copilot should recognize the intent, activate the pr-reviewer workflow, and list findings by severity without you naming the skill
+3. Switch to **Agent mode** (select "Agent" from the mode dropdown at the top of the chat panel)
+4. Type: `Review the last commit — findings in severity order`
+5. Copilot should recognize the intent, activate the pr-reviewer skill, and list findings by severity
 
-**If Copilot ignores the instructions:**
+**If skills don't activate:**
 
-- Open VS Code Settings (`Ctrl+,`) and search for `useInstructionFiles`
-- Make sure **GitHub Copilot › Chat › Code Generation: Use Instruction Files** is enabled
-- This setting is on by default in VS Code 1.93 and later
+- Make sure you're using **Agent mode** in Copilot Chat (not "Ask" or "Edit" mode) — skills require agent mode
+- Open VS Code Settings (`Ctrl+,`) and search for `useInstructionFiles` — confirm it is enabled
+- Verify the skill folder exists at `.github/skills/<skill-name>/SKILL.md` (not nested deeper)
+- Check that `SKILL.md` has valid `name` and `description` in its YAML frontmatter
 
----
-
-### IntelliJ (JetBrains)
-
-IntelliJ also reads `.github\copilot-instructions.md` automatically when the GitHub Copilot plugin is installed. No additional setup is needed beyond Steps 1–3 above.
-
-To verify:
+**IntelliJ (JetBrains):**
 
 1. Open the project in IntelliJ
 2. Open Copilot Chat (`Tools → GitHub Copilot → Open GitHub Copilot Chat`)
 3. Type: `Create a backlog for feature X`
-4. Copilot should recognize the intent, activate the delivery-planner workflow, and ask the appropriate planning questions
+4. Copilot should recognize the intent and activate the delivery-planner skill
 
 ---
 
 ### How skills activate
 
-You do not need to name the skill. Just describe what you want — Copilot reads the trigger mapping in the instructions and activates the right workflow automatically.
+You do not need to name the skill. Just describe what you want — Copilot reads each skill's `description` and decides whether to load it.
 
 ```
 Create a backlog for the auth migration, split into bounded slices.
@@ -218,31 +149,61 @@ Scan the codebase for security issues before the release.
 
 Check whether our docs still match the code before we resume work.
 → Copilot activates: repo-drift-auditor
-
-We need to implement a rate-limiting middleware for the API.
-→ Copilot activates: feature-dev
 ```
 
-Explicit invocation by skill name (`$delivery-planner`, `$pr-reviewer`, etc.) also works as a fallback if Copilot does not pick up the intent automatically.
+Explicit invocation as a slash command (`/delivery-planner`, `/pr-reviewer`, etc.) also works if Copilot does not pick up the intent automatically.
+
+---
+
+### Personal skills (cross-project)
+
+If you want certain skills available in **all** your projects without copying them into each repo, place them in your personal skills directory:
+
+```powershell
+# Windows — personal skills directory
+$skillsDir = "$env:USERPROFILE\.copilot\skills"
+New-Item -ItemType Directory -Force -Path $skillsDir
+
+# Copy a skill for personal use
+Copy-Item -Recurse -Force "C:\tools\ezop-skills\pr-reviewer" "$skillsDir\pr-reviewer"
+```
+
+Personal skills are visible only to you and are not shared with the team.
+
+---
+
+### Other Copilot customization mechanisms
+
+Beyond skills, Copilot supports several other customization primitives that can complement these skills:
+
+| Mechanism | Location | Purpose |
+|---|---|---|
+| **Repository instructions** | `.github/copilot-instructions.md` | Always-on project-wide norms, coding standards |
+| **Path-specific instructions** | `.github/instructions/*.instructions.md` | Rules that apply only to matching file patterns (via `applyTo` globs) |
+| **Prompt files** | `.github/prompts/*.prompt.md` | Reusable prompt templates invoked via `/` slash commands |
+| **Custom agents** | `.github/agents/*.agent.md` | Specialist personas with constrained tool access |
 
 ---
 
 ### Keeping skills up to date (Windows)
 
-When this repo is updated, you need to update the `.github\copilot-instructions.md` in each of your projects. There is no auto-sync — it is a manual copy.
-
-**Quick update with PowerShell** (if you chose Option B — full SKILL.md content):
-
 ```powershell
-# Re-copy a specific SKILL.md into your instructions file
-# Run this from your project root
+# Pull latest from this repo
+cd C:\tools\ezop-skills
+git pull
 
-$skillContent = Get-Content "C:\tools\openai-skills\pr-reviewer\SKILL.md" -Raw
+# Re-copy into your project
+cd C:\projects\my-project
+$source = "C:\tools\ezop-skills"
+Get-ChildItem -Path $source -Directory | Where-Object {
+    Test-Path (Join-Path $_.FullName "SKILL.md")
+} | ForEach-Object {
+    Copy-Item -Path $_.FullName -Destination ".github\skills\$($_.Name)" -Recurse -Force
+}
 
-# Append or replace as needed in .github\copilot-instructions.md
+git add .github\skills
+git commit -m "update AI development skills"
 ```
-
-For the system prompt block from Step 3, updates are rare — only needed if new skills are added to this repo.
 
 ---
 
@@ -254,11 +215,11 @@ Claude Code uses a dedicated skills directory and a plugin system. Skills are lo
 
 ```bash
 # Clone or update this repo
-git clone https://github.com/ezopek/openai-skills.git ~/repos/openai-skills
-# or: cd ~/repos/openai-skills && git pull
+git clone https://github.com/ezopek/ezop-skills.git ~/repos/ezop-skills
+# or: cd ~/repos/ezop-skills && git pull
 
 # Copy all skills (any subdirectory that contains SKILL.md)
-for skill in ~/repos/openai-skills/*/; do
+for skill in ~/repos/ezop-skills/*/; do
   [ -f "${skill}SKILL.md" ] && cp -r "$skill" ~/.claude/skills/
 done
 ```
@@ -297,7 +258,7 @@ EOF
 ### Keeping skills up to date (Linux / macOS)
 
 ```bash
-cd ~/repos/openai-skills
+cd ~/repos/ezop-skills
 git pull
 
 for skill in */; do
@@ -341,19 +302,17 @@ $cicd-guardian             ← (optional) after pipeline changes
 
 ## Troubleshooting
 
-**Copilot ignores `.github\copilot-instructions.md`**
+**Copilot does not activate skills**
+- Make sure you are in **Agent mode** (not "Ask" or "Edit" mode) — skills only work in agent mode
+- Verify the folder structure: `.github/skills/<skill-name>/SKILL.md` (the directory name must match the `name` field in SKILL.md frontmatter)
 - In VS Code: `Ctrl+,` → search `useInstructionFiles` → confirm it is enabled
-- The file must be at the exact path `.github\copilot-instructions.md` (not `.github\instructions.md` or anywhere else)
 - The `.github` folder must be at the repository root, not inside a subdirectory
+- Try explicit invocation: type `/<skill-name>` (e.g. `/pr-reviewer`) to verify Copilot sees the skill
 
-**Copilot follows instructions inconsistently**
-- The file may be too long. Try keeping it under 32 KB. If you have multiple full SKILL.md files pasted in, remove the ones you use least and keep only the system prompt block.
-- Copilot Chat uses the instructions file; inline Copilot suggestions (ghost text) do not
-
-**`feature-dev` — Copilot skips phases or jumps straight to implementation**
-- This usually means the instructions were truncated. Make sure the full `feature-dev.md` workflow is in the file, not just the system prompt description.
-- Explicitly tell Copilot to follow the full workflow: `Use feature-dev workflow — start from Phase 1, do not skip phases`
-- If Copilot still skips: paste the feature-dev.md content at the top of the file, before the system prompt block
+**Copilot ignores `copilot-instructions.md`**
+- The file must be at the exact path `.github/copilot-instructions.md`
+- Copilot Chat uses the instructions file; inline completions (ghost text) do not
+- Keep this file short — it is injected into every conversation and competes for context space
 
 **Skill not found in Claude Code**
 - Confirm the directory exists: `ls ~/.claude/skills/delivery-planner/`
