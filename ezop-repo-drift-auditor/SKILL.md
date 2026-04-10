@@ -31,6 +31,12 @@ This skill is the cross-cutting integrity check around the other workflow skills
 4. `$ezop-slice-reviewer` checks one finished slice
 5. `$ezop-repo-drift-auditor` periodically checks whether those artifacts still match reality
 
+## Announce At Start
+
+When this skill activates, tell the user:
+
+> Using **ezop-repo-drift-auditor** to [specific purpose based on the request].
+
 ## Quick Start
 
 1. Read the repo instructions and the key docs first.
@@ -155,6 +161,27 @@ Strong output from this skill usually includes:
 - `Assumptions` only if needed
 
 If no meaningful drift is found, say so directly and recommend proceeding with the appropriate next skill instead of padding the answer.
+
+## Red Flags
+
+Stop and reconsider if you catch yourself:
+
+- Reporting drift based on what docs say without checking the actual repo
+- Confusing an open design decision with drift
+- Padding the audit with low-value findings to seem thorough
+- Skipping CI/CD and security surfaces because they are harder to audit
+- Recommending a skill fix before clearly stating the drift finding
+- Assuming a command works because the docs say so without verifying
+- Reporting drift for files that were intentionally changed but not yet documented
+
+## Community Skill Integration
+
+Use these community skills alongside this one when appropriate:
+
+- `superpowers:verification-before-completion` — verify findings are based on actual evidence before reporting
+- `$ezop-cicd-guardian` — for deep CI/CD pipeline drift analysis beyond what a general audit covers
+- `$ezop-security-scanner` — when drift findings suggest security posture may have degraded
+- `$ezop-pr-reviewer` — when drift is localized to recent changes that need quality review
 
 ## Resources
 

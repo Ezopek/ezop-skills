@@ -36,6 +36,26 @@ Check whether:
 - new seams or migrations changed where source of truth lives
 - ADRs or architecture notes are now contradicted by the code
 
+## CI/CD Drift
+
+Check whether:
+
+- pipeline definitions in `.github/workflows/`, `.gitlab-ci.yml`, `Jenkinsfile`, or equivalent still match documented CI/CD expectations
+- build steps, test stages, and deployment targets are still correct
+- secret and permission configurations referenced in docs are still appropriate
+- caching strategies and optimization settings are still valid
+- branch protection rules and required checks still match documented policy
+
+## Security Drift
+
+Check whether:
+
+- dependency versions are still free of known critical vulnerabilities
+- authentication and authorization patterns still match documented expectations
+- secret management practices still follow documented standards
+- security headers, CORS, and CSP configurations are still correct
+- access control and permission models still match documented ownership
+
 ## Contract Drift
 
 Check whether:

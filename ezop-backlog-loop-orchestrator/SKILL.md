@@ -23,6 +23,12 @@ This skill works best inside a five-skill workflow:
 4. `$ezop-slice-reviewer` can act as the optional pre-commit acceptance gate for each implemented slice
 5. `$ezop-repo-drift-auditor` can periodically verify that docs, backlog, and workflow assumptions still match the repo
 
+## Announce At Start
+
+When this skill activates, tell the user:
+
+> Using **ezop-backlog-loop-orchestrator** to [specific purpose based on the request].
+
 ## Quick Start
 
 At the start of the run:
@@ -212,6 +218,40 @@ Stop and ask the user only if:
 - the worktree contains conflicting external edits
 - verification keeps failing and needs a human decision
 - the remaining backlog is only low-value cleanup and the loop should be reconsidered
+
+## Red Flags
+
+Stop and reconsider if you catch yourself:
+
+- Implementing multiple slices without committing between them
+- Letting a worker redefine the slice scope
+- Skipping verification to move faster
+- Ignoring test failures and committing anyway
+- Resuming a loop without reading the log first
+- Silently repairing the backlog mid-loop instead of recommending `$ezop-delivery-planner`
+- Spawning a full planner sub-agent for a 2-file bug fix
+- Skipping docs impact when the slice changes contracts or commands
+- Treating `accept` as the default decision instead of earning it through evidence
+
+## Safety Checks
+
+- Never commit secrets, tokens, or credentials — check staged files before every commit
+- Run verification before every commit, not after
+- Do not execute destructive database operations without explicit user approval
+- If a worker touches auth, permissions, or security-critical paths, flag for review before committing
+- Keep the orchestration log outside version control when it contains sensitive operational detail
+
+## Community Skill Integration
+
+Use these community skills inside the loop when appropriate:
+
+- `superpowers:test-driven-development` — instruct workers to follow TDD for new features and bug fixes
+- `superpowers:systematic-debugging` — when verification fails, use structured debugging before attempting fixes
+- `superpowers:verification-before-completion` — verify before every commit; evidence before claims
+- `superpowers:dispatching-parallel-agents` — when two independent slices can be implemented concurrently
+- `superpowers:finishing-a-development-branch` — when the loop completes all backlog items and needs merge or PR decision
+- `$ezop-pr-reviewer` — for a thorough quality review before merging the accumulated work
+- `$ezop-security-scanner` — when a slice touches auth, data handling, or infrastructure
 
 ## Resources
 

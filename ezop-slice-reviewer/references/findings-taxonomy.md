@@ -66,6 +66,19 @@ Examples:
 - contract or architecture guidance is now stale
 - the backlog item was completed but the official planning docs were not updated
 
+### Security Concern
+
+Use when the change introduces or exposes a security risk.
+
+Examples:
+
+- authentication bypass or weakened authorization check
+- hardcoded secrets or credentials in source code
+- SQL injection, XSS, command injection, or other injection vulnerabilities
+- insecure default configurations or overly permissive CORS
+- missing input validation at trust boundaries
+- logging sensitive data such as tokens, passwords, or PII
+
 ## Severity Guidance
 
 Mark as materially blocking when the finding:

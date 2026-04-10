@@ -35,3 +35,27 @@ Use this when:
 - the repo is broadly aligned
 - the real concern is one just-finished slice
 - acceptance confidence depends on reviewing a specific change set, not repo-wide drift
+
+## Route To `$ezop-cicd-guardian`
+
+Use this when the main problem is:
+
+- CI/CD pipeline definitions that have drifted from documented expectations
+- build or deployment configurations that need audit or optimization
+- pipeline security issues such as overly permissive permissions or missing secret rotation
+
+## Route To `$ezop-security-scanner`
+
+Use this when the main problem is:
+
+- security-related drift in dependencies, configs, or code patterns
+- authentication or authorization implementations that no longer match docs
+- secret management or access control that needs audit
+
+## Route To `$ezop-pr-reviewer`
+
+Use this when:
+
+- the drift is localized to a specific set of recent changes that need quality review
+- code quality concerns are the primary issue rather than doc or backlog drift
+- the audit found no systemic drift but one recent PR introduced problems

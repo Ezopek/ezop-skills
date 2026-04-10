@@ -43,6 +43,12 @@ Think of the intended handoff as:
 4. `$ezop-slice-reviewer` can review each finished slice against the approved plan before commit
 5. `$ezop-repo-drift-auditor` can periodically confirm that the docs and planning artifacts still match repo reality
 
+## Announce At Start
+
+When this skill activates, tell the user:
+
+> Using **ezop-delivery-planner** to [specific purpose based on the request].
+
 ## Quick Start
 
 1. Read the repo instructions first, usually `AGENTS.md`, `README.md`, and the relevant operational docs.
@@ -258,6 +264,29 @@ Avoid:
 - backlogs full of non-bounded items
 - plans that skip verification and docs updates
 - vague “future improvements” with no ordering logic
+
+## Red Flags
+
+Stop and reconsider if you catch yourself:
+
+- Planning against an imagined repo state without reading current files
+- Creating backlogs with unbounded or vague items
+- Hiding uncertainty behind confident prose instead of explicit `Open Questions`
+- Skipping verification paths in plan items
+- Inventing services, APIs, or workflows that do not exist in the repo
+- Writing a plan so detailed it becomes implementation without review
+- Asking the user questions you could discover from the repo
+- Producing a 50-item backlog when 8 bounded slices would cover the work
+
+## Community Skill Integration
+
+Use these community skills alongside this one when appropriate:
+
+- `superpowers:brainstorming` — when the feature or initiative needs creative design exploration before planning
+- `superpowers:writing-plans` — for detailed task-level planning within a single slice, complementing the broader backlog view
+- `feature-dev:feature-dev` — for full feature discovery workflow with parallel architecture exploration before writing the plan
+- `$ezop-cicd-guardian` — when the plan touches CI/CD pipelines; have the guardian verify pipeline assumptions
+- `$ezop-security-scanner` — when the plan involves auth, data handling, or infrastructure changes that need security review
 
 ## Resources
 

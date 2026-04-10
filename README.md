@@ -1,18 +1,30 @@
 # ezop-skills
 
-5 skills for AI-driven development — from repo setup, through planning, to autonomous execution and review. Use standalone or together as a pipeline.
+8 skills for AI-driven development — from repo setup, through planning, to autonomous execution, review, security, and CI/CD. Use standalone or together as a pipeline.
+
+Works with Claude Code, GitHub Copilot, Cursor, Windsurf, OpenAI Codex, and any LLM agent that accepts system prompts.
 
 ---
 
 ## Skills
+
+### Core Pipeline
 
 | Skill | When to use |
 |---|---|
 | `$ezop-agent-ready-docs` | Create/update AGENTS.md, README.md, operational docs |
 | `$ezop-delivery-planner` | Create roadmaps, backlogs, feature implementation plans |
 | `$ezop-backlog-loop-orchestrator` | Autonomous backlog execution — loop slice by slice |
-| `$ezop-slice-reviewer` | Review one slice before committing |
+| `$ezop-slice-reviewer` | Review one slice against its approved plan before committing |
 | `$ezop-repo-drift-auditor` | Audit docs/backlog vs. actual code for drift |
+
+### Quality And Security
+
+| Skill | When to use |
+|---|---|
+| `$ezop-pr-reviewer` | General-purpose PR/MR code quality review |
+| `$ezop-cicd-guardian` | Audit, improve, create, and secure CI/CD pipelines |
+| `$ezop-security-scanner` | Security audit — code, deps, secrets, config, infra |
 
 ---
 
@@ -28,6 +40,9 @@ $ezop-repo-drift-auditor        ← check whether docs/backlog have drifted
 $ezop-agent-ready-docs          ← prepare AGENTS.md and repo documentation
         │
         ▼
+$ezop-security-scanner          ← (optional) baseline security posture check
+        │
+        ▼
 $ezop-delivery-planner          ← create backlog / roadmap / feature plan
         │
         ▼
@@ -35,9 +50,22 @@ $ezop-backlog-loop-orchestrator ← run loop: plan → implement → verify → 
         │         ↑
         ▼         │
 $ezop-slice-reviewer            ← (optional) accept each slice before committing
+        │
+        ▼
+$ezop-pr-reviewer               ← quality gate before merge
+        │
+        ▼
+$ezop-cicd-guardian             ← (optional) verify CI/CD is correct and secure
 ```
 
 Each skill can be used standalone — the full pipeline is not required.
+
+### When to use which reviewer
+
+- **`$ezop-slice-reviewer`** — reviews one slice against its approved plan. Focus: did the implementation match the agreement?
+- **`$ezop-pr-reviewer`** — reviews for general code quality. Focus: is the code correct, safe, performant, and maintainable?
+- **`$ezop-security-scanner`** — deep security audit. Focus: are there vulnerabilities, exposed secrets, or insecure patterns?
+- **`$ezop-cicd-guardian`** — CI/CD pipeline review. Focus: is the pipeline correct, secure, and optimized?
 
 ---
 
@@ -179,6 +207,27 @@ ezop-<name>/
 
 ---
 
+## Community skill integration
+
+These ezop skills work well alongside community skills. The most valuable pairings:
+
+| Community skill | When to use with ezop skills |
+|---|---|
+| `superpowers:brainstorming` | Before `$ezop-delivery-planner` for creative design exploration |
+| `superpowers:writing-plans` | For detailed task-level plans within a single slice |
+| `superpowers:test-driven-development` | Inside `$ezop-backlog-loop-orchestrator` for worker TDD discipline |
+| `superpowers:systematic-debugging` | When verification fails in any skill |
+| `superpowers:verification-before-completion` | Before every commit or acceptance claim |
+| `superpowers:dispatching-parallel-agents` | When independent slices can run concurrently |
+| `superpowers:finishing-a-development-branch` | After `$ezop-backlog-loop-orchestrator` completes all items |
+| `feature-dev:feature-dev` | For full feature discovery before planning |
+| `feature-dev:code-explorer` | For deep codebase understanding before docs or plans |
+| `feature-dev:code-reviewer` | For architecture-level code analysis alongside `$ezop-pr-reviewer` |
+
+Each ezop skill includes a **Community Skill Integration** section with specific recommendations.
+
+---
+
 ## Tips
 
 - **Always start from the repo** — all skills require real repository context; they don't generate docs from thin air.
@@ -186,3 +235,6 @@ ezop-<name>/
 - **Append-only log** — the backlog loop writes to `.codex/ai-assisted-backlog-loop.md`; don't delete it between sessions, it's the resume point.
 - **Drift audit before resuming** — after a break of more than a few days, run `$ezop-repo-drift-auditor` first.
 - **Slice reviewer is optional** — the backlog loop has it built in; invoke it separately only when you want a manual review pass.
+- **PR reviewer vs. slice reviewer** — use slice-reviewer for plan compliance, pr-reviewer for general quality.
+- **Security scanner early** — run `$ezop-security-scanner` early in the pipeline to establish a baseline; run again before releases.
+- **CI/CD guardian** — run `$ezop-cicd-guardian` after significant pipeline changes or periodically to catch drift and security issues.

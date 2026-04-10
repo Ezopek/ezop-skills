@@ -37,6 +37,12 @@ This skill is the natural fourth step after the other workflow skills:
 3. `$ezop-backlog-loop-orchestrator` runs plan -> implement -> verify
 4. `$ezop-slice-reviewer` performs the final findings-first acceptance check before commit or merge
 
+## Announce At Start
+
+When this skill activates, tell the user:
+
+> Using **ezop-slice-reviewer** to [specific purpose based on the request].
+
 ## Quick Start
 
 1. Read the approved slice definition first, usually from a backlog item, feature plan, or prior accepted plan.
@@ -197,6 +203,28 @@ Strong output from this skill usually includes:
 - `Decision`
 
 If there are no findings, say so explicitly and mention any residual risk or test gap.
+
+## Red Flags
+
+Stop and reconsider if you catch yourself:
+
+- Approving a slice you have not actually read the diff for
+- Skipping verification output review and trusting claims at face value
+- Rating severity based on gut feeling instead of evidence from the diff
+- Reviewing against an imagined ideal rather than the approved plan
+- Marking `accept` when verification was not run or was incomplete
+- Inflating findings to seem thorough when the slice is genuinely clean
+- Missing security implications in auth, data handling, or permission changes
+- Ignoring docs impact because the code changes look correct
+
+## Community Skill Integration
+
+Use these community skills alongside this one when appropriate:
+
+- `superpowers:verification-before-completion` — verify all acceptance claims are backed by evidence
+- `superpowers:systematic-debugging` — when a finding needs root-cause investigation before judging severity
+- `$ezop-security-scanner` — for deep security review of slices touching auth, data, or infrastructure
+- `$ezop-pr-reviewer` — when the review scope is broader than plan compliance and includes general quality
 
 ## Resources
 

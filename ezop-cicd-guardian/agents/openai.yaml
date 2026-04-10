@@ -1,0 +1,6 @@
+interface:
+  display_name: "CI/CD Guardian"
+  short_description: "Audit, improve, and secure CI/CD pipelines"
+  default_prompt: "Use $ezop-cicd-guardian to audit the CI/CD pipelines in this repo. Read pipeline files first (.github/workflows/, .gitlab-ci.yml, Jenkinsfile, or equivalent). Report findings ordered by severity: security > correctness > performance > style. Check for security issues, correctness, optimization opportunities, and alignment with documented expectations."
+policy:
+  allow_implicit_invocation: false

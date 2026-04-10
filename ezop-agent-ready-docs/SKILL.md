@@ -29,6 +29,12 @@ This skill is the documentation foundation for the broader workflow:
 - `$ezop-backlog-loop-orchestrator` should be able to execute backlog slices with fewer hidden assumptions because the canonical docs are clear
 - `$ezop-repo-drift-auditor` should be able to compare documented truth against repo reality without tripping over duplicated or ambiguous source-of-truth docs
 
+## Announce At Start
+
+When this skill activates, tell the user:
+
+> Using **ezop-agent-ready-docs** to [specific purpose based on the request].
+
 ## Quick Start
 
 1. Read the current repo instructions first, usually `AGENTS.md`, `README.md`, and the most relevant `docs/` files.
@@ -186,6 +192,36 @@ Good edits from this skill usually:
 - update `README.md` only where human-facing command discovery or repo overview needs alignment
 - update operations docs only where a workflow or process is truly canonical
 - leave behind a repo that is easier for agents to navigate, not a bigger pile of prose
+
+## Red Flags
+
+Stop and reconsider if you catch yourself:
+
+- Documenting commands you have not verified from the repo
+- Writing long prose where a short rule would do
+- Skipping the doc-map decision and dumping everything into one file
+- Copying external documentation without checking if it is current
+- Adding guidance that does not apply to this specific repo
+- Improving docs the user did not ask you to touch
+- Assuming a workflow exists without checking CI or scripts
+- Generating an AGENTS.md from imagination instead of repo inspection
+
+## Safety Checks
+
+- Do not include secrets, tokens, passwords, or internal URLs in doc examples
+- If docs reference destructive commands, add explicit warnings
+- Verify recommended commands are safe to run repeatedly
+- Do not expose private infrastructure details in public-facing docs
+
+## Community Skill Integration
+
+Use these community skills alongside this one when appropriate:
+
+- `superpowers:brainstorming` — when doc restructuring involves creative decisions about information architecture
+- `superpowers:verification-before-completion` — verify all documented commands actually work before claiming docs are complete
+- `feature-dev:code-explorer` — when you need deep understanding of codebase architecture before writing architecture docs
+- `$ezop-cicd-guardian` — when CI/CD pipeline documentation needs updating; let the guardian audit pipeline claims first
+- `$ezop-security-scanner` — when security-related documentation needs grounding in actual security posture
 
 ## Resources
 
