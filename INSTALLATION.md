@@ -64,24 +64,24 @@ the outputs it defines. Do not approximate — follow the workflow exactly.
 
 ### Planning and execution pipeline
 
-- **$ezop-agent-ready-docs** — create or update AGENTS.md, README.md, and operational
+- **$agent-ready-docs** — create or update AGENTS.md, README.md, and operational
   docs so this repo is safe and clear for AI agents to work in
-- **$ezop-delivery-planner** — create a roadmap, backlog, or feature implementation plan
+- **$delivery-planner** — create a roadmap, backlog, or feature implementation plan
   that is repo-grounded and executable by AI agents in bounded slices
-- **$ezop-backlog-loop-orchestrator** — run an autonomous backlog loop: plan one slice,
+- **$backlog-loop-orchestrator** — run an autonomous backlog loop: plan one slice,
   implement it, verify, commit, and repeat until all items are done
-- **$ezop-slice-reviewer** — review one completed implementation slice against its
+- **$slice-reviewer** — review one completed implementation slice against its
   approved plan; report findings in severity order; end with accept / needs-fix / blocked
-- **$ezop-repo-drift-auditor** — audit whether docs, backlog items, workflow descriptions,
+- **$repo-drift-auditor** — audit whether docs, backlog items, workflow descriptions,
   and commands still match actual code and repo state
 
 ### Quality and security
 
-- **$ezop-pr-reviewer** — general-purpose PR / MR code quality review: correctness,
+- **$pr-reviewer** — general-purpose PR / MR code quality review: correctness,
   safety, performance, maintainability, test coverage
-- **$ezop-cicd-guardian** — audit, improve, and secure CI/CD pipelines: correctness,
+- **$cicd-guardian** — audit, improve, and secure CI/CD pipelines: correctness,
   security, efficiency, and compliance with standards
-- **$ezop-security-scanner** — deep security audit: code vulnerabilities, dependency
+- **$security-scanner** — deep security audit: code vulnerabilities, dependency
   risks, exposed secrets, insecure config, infra weaknesses
 
 ### Feature development
@@ -101,14 +101,14 @@ the outputs it defines. Do not approximate — follow the workflow exactly.
 
 | User says... | Use |
 |---|---|
-| "create a plan / backlog / roadmap" | `$ezop-delivery-planner` |
-| "run the backlog / continue the loop" | `$ezop-backlog-loop-orchestrator` |
-| "review this PR / review the code" | `$ezop-pr-reviewer` |
-| "did we follow the plan / review the slice" | `$ezop-slice-reviewer` |
-| "update AGENTS.md / update docs" | `$ezop-agent-ready-docs` |
-| "scan for security / check for vulnerabilities" | `$ezop-security-scanner` |
-| "audit CI/CD / fix the pipeline" | `$ezop-cicd-guardian` |
-| "check if docs are stale / drift audit" | `$ezop-repo-drift-auditor` |
+| "create a plan / backlog / roadmap" | `$delivery-planner` |
+| "run the backlog / continue the loop" | `$backlog-loop-orchestrator` |
+| "review this PR / review the code" | `$pr-reviewer` |
+| "did we follow the plan / review the slice" | `$slice-reviewer` |
+| "update AGENTS.md / update docs" | `$agent-ready-docs` |
+| "scan for security / check for vulnerabilities" | `$security-scanner` |
+| "audit CI/CD / fix the pipeline" | `$cicd-guardian` |
+| "check if docs are stale / drift audit" | `$repo-drift-auditor` |
 | "implement feature X" | `feature-dev` |
 
 ---
@@ -137,14 +137,14 @@ The system prompt from Step 3 is enough for Copilot to activate and follow each 
 
 **Example — adding the PR reviewer in full:**
 
-1. Open `C:\tools\openai-skills\ezop-pr-reviewer\SKILL.md`
+1. Open `C:\tools\openai-skills\pr-reviewer\SKILL.md`
 2. Copy the entire contents
 3. Append to `.github\copilot-instructions.md` after the system prompt:
 
 ```markdown
 ---
 
-<!-- Full workflow for $ezop-pr-reviewer -->
+<!-- Full workflow for $pr-reviewer -->
 
 <paste SKILL.md content here>
 ```
@@ -175,7 +175,7 @@ well under the size limit and covers the most common daily tasks:
 | File to paste | Size | Covers |
 |---|---|---|
 | system prompt block (Step 3) | ~2 KB | all 8 skills, trigger routing |
-| `ezop-pr-reviewer/SKILL.md` | ~10 KB | detailed PR review workflow |
+| `pr-reviewer/SKILL.md` | ~10 KB | detailed PR review workflow |
 | `community/feature-dev/commands/feature-dev.md` | ~4 KB | feature development workflow |
 | **Total** | **~16 KB** | well within the ~32 KB limit |
 
@@ -185,7 +185,7 @@ well under the size limit and covers the most common daily tasks:
 
 1. Open the project folder in VS Code (`File → Open Folder`)
 2. Open Copilot Chat (sidebar or `Ctrl+Alt+I`)
-3. Type: `Use $ezop-pr-reviewer to review the last commit`
+3. Type: `Use $pr-reviewer to review the last commit`
 4. Copilot should respond by following the reviewer workflow — asking about scope, listing findings by severity
 
 **If Copilot ignores the instructions:**
@@ -204,7 +204,7 @@ To verify:
 
 1. Open the project in IntelliJ
 2. Open Copilot Chat (`Tools → GitHub Copilot → Open GitHub Copilot Chat`)
-3. Type: `Use $ezop-delivery-planner to create a backlog for feature X`
+3. Type: `Use $delivery-planner to create a backlog for feature X`
 
 ---
 
@@ -213,13 +213,13 @@ To verify:
 Reference skills by name in your message. Copilot will follow the corresponding workflow:
 
 ```
-Use $ezop-delivery-planner to create a backlog for the auth migration.
+Use $delivery-planner to create a backlog for the auth migration.
 
-$ezop-pr-reviewer — review this PR, findings in severity order.
+$pr-reviewer — review this PR, findings in severity order.
 
-Run $ezop-security-scanner on the current codebase.
+Run $security-scanner on the current codebase.
 
-Use $ezop-repo-drift-auditor before we resume the backlog loop.
+Use $repo-drift-auditor before we resume the backlog loop.
 
 feature-dev implement a rate-limiting middleware for the API.
 ```
@@ -236,7 +236,7 @@ When this repo is updated, you need to update the `.github\copilot-instructions.
 # Re-copy a specific SKILL.md into your instructions file
 # Run this from your project root
 
-$skillContent = Get-Content "C:\tools\openai-skills\ezop-pr-reviewer\SKILL.md" -Raw
+$skillContent = Get-Content "C:\tools\openai-skills\pr-reviewer\SKILL.md" -Raw
 
 # Append or replace as needed in .github\copilot-instructions.md
 ```
@@ -249,16 +249,16 @@ For the system prompt block from Step 3, updates are rare — only needed if new
 
 Claude Code uses a dedicated skills directory and a plugin system. Skills are loaded automatically at session start.
 
-### Install ezop-* skills
+### Install skills
 
 ```bash
 # Clone or update this repo
 git clone https://github.com/ezopek/openai-skills.git ~/repos/openai-skills
 # or: cd ~/repos/openai-skills && git pull
 
-# Copy all ezop-* skills into the Claude Code skills directory
-for skill in ~/repos/openai-skills/ezop-*/; do
-  cp -r "$skill" ~/.claude/skills/
+# Copy all skills (any subdirectory that contains SKILL.md)
+for skill in ~/repos/openai-skills/*/; do
+  [ -f "${skill}SKILL.md" ] && cp -r "$skill" ~/.claude/skills/
 done
 ```
 
@@ -275,7 +275,7 @@ These plugins add additional skills: `superpowers:brainstorming`, `superpowers:w
 
 ```bash
 ls ~/.claude/skills/
-# Expected output includes: ezop-delivery-planner  ezop-pr-reviewer  ezop-security-scanner  ...
+# Expected output includes: delivery-planner  pr-reviewer  security-scanner  ...
 ```
 
 Claude Code discovers skills automatically. The `superpowers` plugin instructs Claude to check for relevant skills before every response — no additional configuration needed.
@@ -299,8 +299,8 @@ EOF
 cd ~/repos/openai-skills
 git pull
 
-for skill in ezop-*/; do
-  cp -r "$skill" ~/.claude/skills/
+for skill in */; do
+  [ -f "${skill}SKILL.md" ] && cp -r "$skill" ~/.claude/skills/
 done
 ```
 
@@ -314,26 +314,26 @@ Once installed, the skills work together as a pipeline. You do not need to use a
 [new repo or returning after a break]
         │
         ▼
-$ezop-repo-drift-auditor        ← check whether docs still match the code
+$repo-drift-auditor        ← check whether docs still match the code
         │
         ▼
-$ezop-agent-ready-docs          ← prepare AGENTS.md and repo documentation
+$agent-ready-docs          ← prepare AGENTS.md and repo documentation
         │
         ▼
-$ezop-delivery-planner          ← create backlog / roadmap / feature plan
+$delivery-planner          ← create backlog / roadmap / feature plan
         │
         ▼
-$ezop-backlog-loop-orchestrator ← execute plan slice by slice
+$backlog-loop-orchestrator ← execute plan slice by slice
         │          ↑
         ▼          │
-$ezop-slice-reviewer            ← (optional) accept each slice before committing
+$slice-reviewer            ← (optional) accept each slice before committing
         │
         ▼
-$ezop-pr-reviewer               ← quality gate before merge
+$pr-reviewer               ← quality gate before merge
         │
         ▼
-$ezop-security-scanner          ← (optional) before releases
-$ezop-cicd-guardian             ← (optional) after pipeline changes
+$security-scanner          ← (optional) before releases
+$cicd-guardian             ← (optional) after pipeline changes
 ```
 
 ---
@@ -355,7 +355,7 @@ $ezop-cicd-guardian             ← (optional) after pipeline changes
 - If Copilot still skips: paste the feature-dev.md content at the top of the file, before the system prompt block
 
 **Skill not found in Claude Code**
-- Confirm the directory exists: `ls ~/.claude/skills/ezop-delivery-planner/`
+- Confirm the directory exists: `ls ~/.claude/skills/delivery-planner/`
 - Confirm `SKILL.md` is present inside it
 - Restart Claude Code after copying new skills
 

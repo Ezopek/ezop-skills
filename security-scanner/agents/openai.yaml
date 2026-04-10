@@ -1,0 +1,6 @@
+interface:
+  display_name: "Security Scanner"
+  short_description: "Audit repo security across code, deps, secrets, and config"
+  default_prompt: "Use $security-scanner to audit this repository for security vulnerabilities. Scan code patterns, dependencies, secrets, configuration, and infrastructure. Report findings first, ordered by severity, with file references and recommended fixes."
+policy:
+  allow_implicit_invocation: false

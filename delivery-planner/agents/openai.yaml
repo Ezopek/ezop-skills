@@ -1,0 +1,6 @@
+interface:
+  display_name: "Delivery Planner"
+  short_description: "Draft AI-native roadmaps and backlogs"
+  default_prompt: "Use $delivery-planner to create or update a repo-grounded roadmap, backlog, or feature implementation plan that AI developer agents can execute in bounded slices, and flag when $agent-ready-docs should tighten the documentation foundation first or when the output should feed directly into $backlog-loop-orchestrator."
+policy:
+  allow_implicit_invocation: false

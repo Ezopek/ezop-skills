@@ -1,0 +1,6 @@
+interface:
+  display_name: "Repo Drift Auditor"
+  short_description: "Audit docs, backlog, and workflow drift"
+  default_prompt: "Use $repo-drift-auditor to audit whether this repo's docs, backlog, workflows, and implementation reality have drifted apart, then recommend whether $agent-ready-docs, $delivery-planner, $backlog-loop-orchestrator, or $slice-reviewer should handle the next step."
+policy:
+  allow_implicit_invocation: false

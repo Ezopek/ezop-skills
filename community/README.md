@@ -1,6 +1,6 @@
 # Community Skills
 
-Third-party skills referenced by ezop-* skills. Copied here for convenience so the full toolkit lives in one repo.
+Third-party skills referenced by the skills in this repo. Copied here for convenience so the full toolkit lives in one place.
 
 ## Source
 
@@ -13,24 +13,24 @@ Third-party skills referenced by ezop-* skills. Copied here for convenience so t
 
 | Skill | Used by |
 |---|---|
-| brainstorming | `$ezop-delivery-planner`, `$ezop-agent-ready-docs` |
-| test-driven-development | `$ezop-backlog-loop-orchestrator` (worker TDD discipline) |
+| brainstorming | `$delivery-planner`, `$agent-ready-docs` |
+| test-driven-development | `$backlog-loop-orchestrator` (worker TDD discipline) |
 | systematic-debugging | All skills (when verification fails) |
 | verification-before-completion | All skills (evidence before claims) |
-| dispatching-parallel-agents | `$ezop-backlog-loop-orchestrator` (concurrent slices) |
-| finishing-a-development-branch | `$ezop-backlog-loop-orchestrator` (loop completion) |
-| writing-plans | `$ezop-delivery-planner` (task-level detail) |
-| requesting-code-review | `$ezop-pr-reviewer` (self-review) |
-| receiving-code-review | `$ezop-pr-reviewer` (handling feedback) |
+| dispatching-parallel-agents | `$backlog-loop-orchestrator` (concurrent slices) |
+| finishing-a-development-branch | `$backlog-loop-orchestrator` (loop completion) |
+| writing-plans | `$delivery-planner` (task-level detail) |
+| requesting-code-review | `$pr-reviewer` (self-review) |
+| receiving-code-review | `$pr-reviewer` (handling feedback) |
 
 ### feature-dev
 
 | Component | Used by |
 |---|---|
-| feature-dev (command) | `$ezop-delivery-planner` (feature discovery) |
-| code-explorer (agent) | `$ezop-agent-ready-docs` (codebase understanding) |
-| code-reviewer (agent) | `$ezop-pr-reviewer` (architecture-level review) |
-| code-architect (agent) | `$ezop-delivery-planner` (architecture exploration) |
+| feature-dev (command) | `$delivery-planner` (feature discovery) |
+| code-explorer (agent) | `$agent-ready-docs` (codebase understanding) |
+| code-reviewer (agent) | `$pr-reviewer` (architecture-level review) |
+| code-architect (agent) | `$delivery-planner` (architecture exploration) |
 
 ## Updates
 
