@@ -69,30 +69,13 @@ Each skill can be used standalone — the full pipeline is not required.
 
 ---
 
-## How to invoke skills
+## Setup
 
-### Claude Code (CLI)
-The `$skill-name` prefix and slash commands are recognized automatically:
-```
-$ezop-delivery-planner create a backlog for feature X
-```
-```
-/ezop-delivery-planner
-```
+See **[INSTALLATION.md](INSTALLATION.md)** for step-by-step setup instructions:
 
-### Claude (Anthropic) — Projects / API
-Paste the contents of `SKILL.md` as a system prompt or attach it as a document in your Project. Then reference the skill by `$name` in your message.
-
-### OpenAI Codex / Custom GPT
-Each skill includes `agents/openai.yaml` — import it as an Action or paste the description into a GPT system prompt. The `default_prompt` field in the yaml is a ready-made starter.
-
-### Copilot / Cursor / Windsurf
-Paste `SKILL.md` into `.cursorrules`, `AGENTS.md`, or the conversation context. Then reference the skill via `$ezop-<name>` in your agent prompts.
-
-### Any agent (generic)
-Each skill is a self-contained prompt — just:
-1. Paste `SKILL.md` content into the system / context
-2. Call it via `$ezop-<name>` or the full skill name
+- GitHub Copilot in VS Code / IntelliJ on Windows
+- Claude Code on Linux / macOS / WSL
+- Ready-made system prompt to paste into `.github/copilot-instructions.md`, `CLAUDE.md`, or `AGENTS.md`
 
 ---
 
@@ -188,21 +171,6 @@ check whether AGENTS.md, backlog, and commands still match the code
 # EN
 Run $ezop-repo-drift-auditor — periodic check, we haven't touched this repo
 in 2 weeks and want to make sure docs haven't drifted before planning next sprint
-```
-
----
-
-## Skill directory structure
-
-```
-ezop-<name>/
-├── SKILL.md                  ← skill definition (system prompt / description)
-├── agents/
-│   └── openai.yaml           ← OpenAI / Custom GPT configuration
-└── references/
-    ├── checklist.md          ← quality gates for the skill
-    ├── prompt-templates.md   ← ready-made prompt templates
-    └── *.md                  ← additional references (taxonomy, types, routing...)
 ```
 
 ---
