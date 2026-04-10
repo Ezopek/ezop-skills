@@ -115,9 +115,12 @@ the outputs it defines. Do not approximate — follow the workflow exactly.
 
 ### Skill workflow reference
 
-For each skill, the detailed workflow is in `SKILL.md` inside the corresponding folder
-in the openai-skills repo. If Copilot needs more detail for a specific skill, paste
-the full SKILL.md content below this block (see Step 4).
+The descriptions above are summaries. If you need to follow a skill's complete workflow
+and the user has not yet provided the full instructions, ask them:
+
+> "To follow the full **$[skill-name]** workflow I need its complete SKILL.md.
+> Please paste the contents of `[skill-name]/SKILL.md` from the openai-skills repo
+> into this conversation, or add it to `.github/copilot-instructions.md`."
 ```
 
 Commit this file so all team members share the same skill context:
@@ -205,6 +208,50 @@ To verify:
 1. Open the project in IntelliJ
 2. Open Copilot Chat (`Tools → GitHub Copilot → Open GitHub Copilot Chat`)
 3. Type: `Use $delivery-planner to create a backlog for feature X`
+
+---
+
+### Global instructions — apply skills to every project
+
+By default, `.github\copilot-instructions.md` applies only to the repo it lives in. If you want the skills active in **all** projects without repeating the setup, use one of the options below.
+
+#### Option A — VS Code user settings (all workspaces)
+
+Open your **user** `settings.json` (not workspace settings):
+
+1. Press `Ctrl+Shift+P` → type **Preferences: Open User Settings (JSON)** → Enter
+2. Add the following entry (create the file `C:\tools\openai-skills-instructions.md` with the system prompt from Step 3 first):
+
+```json
+"github.copilot.chat.codeGeneration.instructions": [
+  {
+    "file": "C:\\tools\\openai-skills-instructions.md"
+  }
+]
+```
+
+The file can be anywhere on disk — the path above is just a suggestion. This setting lives in:
+```
+%APPDATA%\Code\User\settings.json
+```
+and applies to every workspace you open in VS Code.
+
+> **Note:** A `.github\copilot-instructions.md` file in the current repo is still read on top
+> of this — both sources are merged. Use user settings for the system prompt (Step 3) and
+> repo-level files for project-specific additions.
+
+#### Option B — IntelliJ global instructions file (auto-discovered)
+
+Create the file at this exact path — IntelliJ's Copilot plugin reads it automatically for all projects:
+
+```
+C:\Users\<your-username>\AppData\Local\github-copilot\intellij\global-copilot-instructions.md
+```
+
+Paste the system prompt from Step 3 into that file. No further configuration needed.
+
+You can also set or view this path in IntelliJ via:
+`Settings → Tools → GitHub Copilot → Custom Instructions`
 
 ---
 
