@@ -1,6 +1,0 @@
-interface:
-  display_name: "Slice Reviewer"
-  short_description: "Review one bounded slice before commit"
-  default_prompt: "Use $slice-reviewer to review one bounded implementation slice against its approved plan, changed files, verification results, and docs impact, then return findings first and finish with `accept`, `needs-fix`, or `blocked`."
-policy:
-  allow_implicit_invocation: false
