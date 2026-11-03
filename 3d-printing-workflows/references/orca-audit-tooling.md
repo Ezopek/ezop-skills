@@ -1,0 +1,60 @@
+# Automated Orca project and G-code audit tooling
+
+Use when building, extending, reviewing or operating an automated 3MF and G-code diagnostic report. It complements the printing guidance and is not a substitute for physical validation. This file records a contract, not a shipped tool.
+
+## 1. Durable contract
+
+A trustworthy audit has four boundaries:
+1. **Artifact identity:** path, size, modification time and SHA-256; distinguish base, `fixes`, `final` and review siblings; never mutate the source 3MF.
+2. **Slicer evidence:** inspect embedded profiles, optionally invoke the intended slicer build, retain redacted stdout and stderr, and reject missing G-code or critical solver warnings even when the exit code is zero.
+3. **Stateful G-code analysis:** parse motion, tools, roles, layers, extrusion and retraction state and arc geometry; do not count text fragments.
+4. **Human feedback:** emit labelled heuristics plus a post-print checklist and photographs so thresholds can be tuned against physical outcomes.
+
+Suggested modes: audit a project with `--slice`, audit a project against a given G-code, or audit a G-code alone. A shareable bundle holds a compact `report.md` (evidence and PASS, WARN, FAIL, INFO findings), a stable-schema `report.json`, redacted `settings.json`, redacted `slice.log` (including partial-failure runs), aggregate XY, XZ and YZ projections, and a `print-feedback.md` template (physical outcome, affected layer/Z/XY, photos, material state and post-audit setting changes). Exclude generated G-code from the bundle by default.
+
+## 2. 3MF inspection
+
+Read specific ZIP entries without extracting (`Metadata/project_settings.config`, `Metadata/model_settings.config` and `Metadata/slice_info.config`, plus plate metadata and previews when useful); bound metadata entry sizes before decoding; wrap malformed ZIP, JSON and XML as actionable errors; support plain and namespaced XML tags. Resolve per-tool filament settings correctly: a tool-local `nil` or inherit value falls back to the matching index in the printer or material array, not another tool's value. Record material profile, temperature, PA, retraction length, minimum travel, wipe, lift height, type and slope.
+
+## 3. Stateful G-code parser requirements
+
+- **Layers and roles:** consume `;LAYER_CHANGE` plus `;Z:` and indexed layer comments. If printable motion appears before the first marker, keep global role and path evidence but discard synthetic per-layer buffers when the first marker arrives. Mark markerless analysis synthetic, and warn that without layer markers per-layer components may be merged. Track `;TYPE:` roles and actual tool commands; prove support and interface tool and material mapping from emitted paths, not from config alone, by binding the emitted `Tn` and roles to the resolved artifact's material slots and per-tool inheritance (section 2). Project metadata gives a declared material identity; it is not proof of the physical filament loaded.
+- **Extrusion and retraction:** support `M82` and `M83`; keep absolute-E registers per physical tool across `Tn`; treat repeated negative-E wipe moves in one retracted state as one logical retraction; support firmware `G10/G11` and report `G10 S1` toolchange retracts separately; keep retraction length, minimum travel, wipe, lift and lift slope independent.
+- **Arcs:** arc fitting can produce huge numbers of `G2/G3` moves. Do not ignore them or treat chords as exact. Resolve valid XY-plane `I/J` and `R` geometry with sweep direction, radius, length, bounds and sampled raster points; validate start and end radius consistency; distinguish exact arcs from malformed fallback-to-chord moves and warn on any fallback; bound samples per arc to prevent unbounded work.
+- **Interface components:** detect islands **per layer**: rasterise support-interface paths at a declared cell size, find 8-connected components, record layer, Z, raster area, bounds, path length, segments, tool, material, nearest larger component and path printed since the last toolchange, compare against body cells from a bounded number of earlier layers for an explicitly heuristic coverage ratio, and keep thresholds configurable and recorded. Aggregate projections are visual orientation only.
+- Treat missing or mixed layer-marker dialects as unreliable instead of combining possibly different layer boundaries.
+
+## 4. Findings policy
+
+Each finding carries a stable ID, status, evidence, recommendation and a confidence or heuristic label. Do not turn physical uncertainty into deterministic failure (a tiny PETG cap on broad PLA may be safe; a low-coverage first fragment after a toolchange deserves inspection). `WARN` normally exits zero; `FAIL` may exit nonzero under an explicit strict mode; slicer execution failure still produces a redacted partial report and a distinct exit code. Never auto-prescribe global flow or PA from the report and never let advice generation modify the input 3MF.
+
+## 5. Privacy before disk
+
+Redact before writing reports, settings, logs or archives, not only for display. Matching should cover separator variants and camelCase or collapsed forms: host addresses, passwords, secrets, bearer tokens, API, access and private keys, and URL userinfo. End-to-end tests should assert that known secret values appear nowhere in the generated bundle.
+
+## 6. Spatial index and resource guards (streaming crossing queries)
+
+A coarse grid is only a candidate index; final crossing classification must use an exact segment-intersection predicate, and every pair of truly intersecting segments must share at least one indexed cell. For a 2D DDA or supercover traversal:
+- derive start and target cells with the same `floor(coordinate / cell_size)` rule;
+- an axis with zero delta never steps; an axis already in its target cell never steps again even when the other axis reaches a corner at exactly `t = 1`;
+- at interior corner crossings include both side-adjacent cells before the diagonal cell;
+- add a fail-closed iteration bound such as Manhattan cell distance plus a small constant;
+- keep the exact intersection check after the grid lookup so coarse cells cannot create false positives.
+
+The important exact-boundary regression is a diagonal such as `(10, 0) -> (5, 5)` with a 5 mm grid: a naive corner step reaches the target X cell early, steps X once more while finishing Y, overshoots forever and grows the cell set until the process is killed.
+
+Verification matrix: random strict intersections must have overlapping cell sets; deterministic exact-grid-boundary cases in positive and negative directions, horizontal and vertical lines, corner crossings and zero-length segments; assert termination within the bound and small finite sets for boundary fixtures; test endpoint-only and collinear exclusions separately; assert counters partition mechanically (total equals with plus without retraction, with plus without lift, protected plus unprotected). Random continuous coordinates alone rarely hit exact cell boundaries and can hide a catastrophic termination bug.
+
+Minimum implementation qualification and release matrix, broader than the spatial matrix above. The audit contract is optional and future: nothing here is bundled, runnable or a demand to build an audit tool. A reusable implementation would need unit tests for plain and namespaced 3MF metadata, inheritance arrays, both layer-marker styles, markerless and pre-marker cases, M82/M83 and per-tool E, ordinary and toolchange firmware retracts, exact and malformed arcs, redaction before disk, slicer success, failure, strict exit status and partial report, component metrics and image generation; syntax, formatter and lint checks; a clean-home install smoke test; real acceptance on a representative multi-tool 3MF with an actual slice, asserting project and G-code hashes, declared versus seen layers, role-to-tool mapping, exact and fallback arc counts, solver warnings, PNG signatures, no G-code in the ZIP and the absence of private values; an independent bounded review of the final diff; and the source 3MF hash unchanged after the run.
+
+Bounded execution: run adversarial parser tests and at least one full real G-code audit under an explicit memory ceiling. Before shipping run unit tests, lint, syntax and diff checks under the ceiling; execute the exact reviewed source on representative full G-code and record elapsed time, peak resident memory, layer-local peak segment count and counter invariants; compare an installed executable's hash with the reviewed source and run the installed executable on real G-code (not only `--help`); keep the previous executable as a timestamped rollback copy.
+
+The two bundled analysers (`../scripts/`) are narrower, read-only probes for seam gaps and sparse-infill crossings; they do not implement this contract. Their supported input is explicit: absolute XY positioning (`G90`, also the default) and relative extrusion declared with `M83` before the first `E` word, with commands read after `;` comments are removed. They refuse, with a message, X/Y/Z motion under `G91`, extrusion under `M82` or before `M83`, and non-extruding `G2`/`G3` arcs (the seam analyser) or such arcs under sparse infill (the sparse analyser), because chord-based length or crossing counts would be wrong there. Extruding arcs are not interpreted: the seam analyser uses only their end points, and the sparse analyser leaves them out, so its crossing counts remain lower bounds.
+
+Both analysers also refuse, by line and field and without echoing the raw text, any `X`/`Y`/`Z`/`E`/`F`/`I`/`J`/`R` word of a `G0` to `G3` command that is malformed or not a finite number (nonfinite and overflowing values included), and any full-circle `G2`/`G3` arc (`I`/`J`/`R` with an end point equal to its start; no arc geometry is computed, so it is refused rather than treated as a no-op or a deretraction). The sparse analyser also refuses a report path that is the same file as its source (same path, symlink, hardlink or normalised-path alias) before writing anything. That list is exactly what the scripts check. They are narrow probes, not G-code interpreters: any other unsupported or malformed G-code is not detected, so a clean run is not a statement that the whole file was understood.
+
+Arc end-point equivalence differs by analyser, and neither computes arc geometry. The sparse analyser treats an end point as equal to the start when it is within 1e-9 mm per X and per Y (a per-coordinate tolerance, not exact equality, so a 5e-10 mm difference is still refused as a full circle), and it reports that tolerance in its refusal. The seam analyser compares its end point to the start exactly, with no tolerance, and says so in its refusal.
+
+The seam analyser also checks derived values, not only the words. A coordinate difference or hypot (move length, direct travel, path gap), an accumulated total (a path's extrusion, the non-extruding travel, the retraction or de-retraction totals) or an even-length median that adds two large gaps can overflow even when every input is finite. It refuses a nonfinite tracked or reported value by line and prints nothing, so a refusal never leaves a partial report; ordinary output is unchanged byte for byte, and there is no physical coordinate cap (large values that stay representable work). Its numeric command-line options feed the same report and must be finite numbers too.
+
+Resource limit of the sparse analyser: it charges a fixed budget of 1,000,000 spatial work units per invocation (bounding-box cell visits, bucket entries traversed, candidate intersection checks and grid insertions), before each piece of work, never reset per layer and with no override or automatic raise. When a run exceeds it, the analyser stops with an explicit message, writes no report and leaves the source untouched: that input is NOT DONE by this probe, and the next step is a separately qualified bounded backend, not an unsafe retry. A full real-plate G-code can exceed the budget. It is an implementation guard of this narrow probe, not OS containment, a benchmark, or a statement about wall time or memory.
