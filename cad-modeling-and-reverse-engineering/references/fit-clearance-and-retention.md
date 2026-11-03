@@ -1,0 +1,26 @@
+# Fit, clearance and retention for holders, inserts and storage mounts
+
+Use when a printed part must receive, hold or be inserted into a real object (container insert, device cradle, clip, holder, label deck). Generic gates are in `design-and-fit-gates.md`. Examples below come from a dry-box and hygrometer-insert case and illustrate rules; they are not universal requirements.
+
+## Doctrine in short
+
+- Do not equate a source model's global bounding box with its contact footprint. Recover horizontal sections at the intended insertion height and compare several Z slices.
+- Compute the complete insertion path against the **exact target mesh**: clear width, height and depth after every lip or latch, at the seated position and along the motion, with a continuous collision or swept-volume proof or an explicit conservative inter-sample bound (see Insertion path), otherwise only an approximate, provisional result; test every orientation and end-first direction the object can take.
+- Retention is proven per orientation by render and escape-path audit; guides and gravity shelves do not retain.
+- Resolve the dimensional frame first (plane, face, edge, motion axis), keep clarified dimensions as named parameters, and after a physical fit passes preserve the successful cavity and revise retention minimally and separately.
+
+## Details
+
+**Footprint recovery.** For a custom insert, inspect a compatible source or remix STL before asking for dimensions, but treat global bounds only as a first clue. A mesh can include raised holders, ribs, tabs or other geometry at other Z levels that makes its overall width and length much larger than the shape that reaches the container bottom. Slice horizontally at the insertion height, compare several Z levels for taper, and reconcile with a measured top-view profile. Export thin (about 1.0–1.2 mm) footprint coupons in nominal, loose and extra-loose clearances before the full tray or lid. Prefer a code-CAD model with external parameters and STEP plus STL export when the container has an asymmetric waist or taper.
+
+**Insertion path.** For an external holder or clip calculate the path from the exact target mesh before exporting. A model can be manifold and have generous outer bounds yet reject its target because a retention feature consumes the usable cavity. Use Boolean-intersection or equivalent exact-mesh clearance checks at the final seated position. Along the motion, a complete collision-free path needs either a continuous collision or swept-volume proof, or an explicit conservative inter-sample bound: discrete samples are enough only when the minimum verified clearance exceeds the maximum displacement of any point of the object's surface between consecutive samples (translation plus rotation about its pivot, plus measurement and pose uncertainty). Without one of those, call the sampled sweep approximate and provisional, never a complete collision-free path; a thin obstacle can sit between two samples (a toy illustration of the gap, not CAD or physical fit proof). When the object is asymmetric test both faces and both end-first orientations.
+
+**Retention.** For anything that can be tilted, prove the retention path for every intended orientation: render the exact target mesh in the assembled holder from each escape direction and require a real bezel, lip or closed feature in front of it. Compare the target envelope with the visible opening so the opening is mechanically smaller along retained directions. If the design deliberately leaves an insertion direction open, state the corresponding inversion or withdrawal limit instead of claiming universal retention.
+
+**Declared support-free requirement.** If the part must be support-free and presentable, make that an explicit gate: base-flat orientation, no unsupported downward faces above the bed, and visual treatment (rounded corners, a coherent silhouette) in the geometry rather than as post-processing.
+
+**Verification.** Check exported meshes independently for watertightness, winding, positive volume, intended bounds, usable cavity dimensions, retention in an assembled visual audit and visual geometry. Package source, effective parameters, tests and validator with the deliverable.
+
+**After a physical test.** If the first fit proves the cavity comfortably loose, keep that cavity and make retention a separate, minimal revision. Do not reinterpret an already clarified dimension in a later revision; keep it a named parameter and show its coordinate in the assembled render. Prefer the simplest single catch the user describes, rooted continuously in the backing, over multi-tab, crossbar or ramp mechanisms. If testing shows a target can bypass side guides by a combined lateral and tilt motion, stop stacking local lip and rail edits: redesign retention as a deliberate, separately releasable snap-fit or latch and re-run clearance and escape-path gates. Keep a thumb-access opening, visually audit the removal path, and collect repeated insert and remove plus inverted-holder feedback before promoting beyond a fit prototype.
+
+**Label deck.** Size a replaceable label deck from the user's exact label stock, keep the deck shallow, make only the exposed-edge peel scoop deeper, and validate that enough material remains below the scoop.
