@@ -17,6 +17,20 @@ These heuristics come from practitioner material, for example the public video "
 
 Receiving-object geometry: `fit-clearance-and-retention.md`. Threaded or sealing parts, gears: `physical-reverse-engineering.md`. Slicer settings, materials, supports and printer behaviour belong to a printing workflow; hand over orientation and support expectations explicitly.
 
+### 1.1 Candidate: removable CAD support fins
+
+When a deliberately chosen build orientation leaves a part poorly seated or free to sway or twist, consider sacrificial fins after simpler orientation or splitting alternatives. This is a **candidate design pattern**, not a physically validated recipe or a requirement for every model.
+
+- Keep the finished-part source unchanged; create a named manufacturing sibling with separately parameterised fins, broad feet and breakaway contacts. A bed-contact chamfer changes the finished part: do not add it to a mating, sealing or cosmetic surface without an explicit design decision.
+- Design in the **final build frame**. Prefer short attachment tines lying in the build-layer plane over tiny slanted towers. A nominal one-layer height or one-extrusion width is a target to inspect, not a fixed dimension: actual extrusion width, minimum feature handling, first/adaptive layer heights and the contacts' Z placement matter.
+- A disconnected prop only resists motion towards it; it does not retain the part against moving away. Where attachment is needed, give contacts finite overlap into both bodies rather than tangent-only contact. Consider the fin's own bed footprint and stability during early growth, not only the completed shape.
+- Put contacts on explicitly allowed edges or hidden surfaces, never assume every edge tolerates a scar. Preserve mating/sealing lands; provide removal access and a direction that will not damage the part. Long parts may need separated fins to resist twisting rather than a thicker central prop.
+- Keep stand-off, contact section and spacing, foot size and placement explicit. Scaling or reorienting the combined model, or changing the intended material/nozzle/layer schedule, invalidates its previous qualification: reassess or regenerate the sacrificial geometry rather than blindly scaling fragile contacts. A single STL does not make the result process-independent or automatically stronger.
+- Re-open the export: check intended solid/component count, real connections, no unintended fused surfaces and unchanged functional geometry outside authorised contacts. Then inspect the actual slice for surviving contacts, clearances and layer placement. Horizontal tines alone do not guarantee a continuous extrusion path or no retractions.
+- Before relying on clean removal or stability, compare a small coupon with a baseline in the target material and orientation, varying one contact parameter at a time. Geometry checks, slicer acceptance, holding through a print and removal damage are separate results. Printer actions retain the printing workflow's authorisation boundary.
+
+Inspiration: Slant 3D, [How to Design Better Support Fins for 3D Printing](https://www.youtube.com/watch?v=vnn4XeKQobs). Do not inherit its all-machine/material/scaling guarantees; [Arachne's feature-size and variable-width behaviour](https://help.prusa3d.com/article/arachne-perimeter-generator_352769) is one documented reason to verify the actual slice.
+
 ## 2. Tolerance and physical measurement
 
 - Measure the real object with the right instrument (calipers, not a ruler, for fits), repeat, note flexible or worn surfaces and record uncertainty next to each value. Prefer several samples.
