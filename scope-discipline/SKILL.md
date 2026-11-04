@@ -1,6 +1,6 @@
 ---
 name: scope-discipline
-description: Use when designing scope. Coach tradeoffs; prevent drift.
+description: "Use when designing or planning a new tool, workflow, automation or feature, when a request could be read several ways, or when reviewing a plan, spec or diff against what was asked. Helps catch scope drift: unrequested roles, approvals, gates, permission tokens, locks, persistent state or new services. Also use when the user complains about overengineering or asks what can be cut. A clear, small task needs no coaching."
 ---
 
 # Scope discipline
@@ -19,11 +19,11 @@ Read the supplied conversation and materials first; do not ask about facts they 
 
 ## Choose the mode
 
-**Clear small task**: do it within the authority you were given. No interview, no design document, no fresh approval, no artificial checkpoint.
+**Clear small task**: do it within the authority you were given. No interview, no design document, no fresh approval, no extra review, no artificial checkpoint.
 
 **Plan requested, not implementation**: stay in planning. Coach through unresolved consequential choices before writing the plan; if context already settles them, write it directly. Do not start building unless implementation is also authorized.
 
-**Ambiguous or consequential design**: coach, as described next. This covers new tools, workflows or features, requests that could be read several ways, and anything that adds lasting mechanism, touches data, or is costly to undo.
+**Ambiguous or consequential design**: coach, as described next. This covers new tools, workflows or features, requests that could be read several ways, and anything that adds lasting mechanism or is costly to undo. Routine, clearly scoped, reversible changes stay direct, even when they touch data; validate real trust boundaries and prevent data loss as usual.
 
 If the mode is unclear, inspect context first. Do not start a consequential action while its material scope or authority is unresolved; ask only about that boundary, not for generic permission to continue.
 
@@ -107,6 +107,14 @@ When reviewing a plan, spec, design or diff, compare it with what the user origi
 
 When the user's intent changes, amend the current record and note the change. Do not silently rewrite earlier decisions as though things had always been that way.
 
+### Independent lens for larger designs and changes
+
+For a larger new design, feature or project, or a major change to an existing system, have a genuinely independent reviewer apply this review. Give them the user's original request and later corrections, not only the generated spec. Ask which significant mechanisms are actually necessary, what to remove or simplify, and what the real costs and the invariants worth keeping are. This is a lens, not a stage: assign it to an independent reviewer you already have, or run it in parallel with the other review. It adds no approval step and no standing component. If no independent reviewer is available, say so instead of presenting your own pass as independent. Skip it for small, clear tasks.
+
+## Checkpoint during long execution
+
+When a long run keeps accumulating reviews, tests, gates, or implementation or repair cycles, take a short, proportionate look: what useful progress exists now, what original gap remains, and what nobody asked for. This look can recur when relevant as the work continues, not just once. Keep the useful work and any genuinely binding safety requirement. A concern raised here is not an automatic pause, audit, new task or redo of finished work. If something needs the user's decision, ask that one question plainly and carry on with the rest.
+
 ## Example
 
 A user asks for a script that copies their notes folder to an external drive.
@@ -121,4 +129,4 @@ Recommendation: the simple copy with no deletion propagation. Mention the state 
 
 ## Limits
 
-Do not add a review agent, coordinator, registry, score or gate to apply this skill. It is guidance that lowers the risk of scope drift. It does not enforce anything and does not guarantee compliance.
+Do not add a standing review agent, coordinator, registry, score or gate to apply this skill. The one allowance is the proportionate independent lens for larger designs and changes described above: a distinct question for an independent reviewer you already have or a parallel one, never a separate approval stage or autonomous service. Discuss with the user when needed, but do not invent approvals, enforce mechanisms or lower security. The skill is guidance that lowers the risk of scope drift. It does not enforce anything and does not guarantee compliance.
