@@ -1,6 +1,6 @@
 ---
 name: project-coordination
-description: "Use when leading multi-session technical work: research, options with trade-offs, decisions, a reviewed plan and execution, kept in a dossier that lets a fresh session resume from one command. Also use when resuming a coordinated topic from its dossier or taking over a running project. Covers delegated research, verifying decisive facts at the source, independent review, approval cards and honest continuation. Not for a quick question, a lookup or a small change, even one that ends in a merge or deploy: unless invoked by name or part of a topic this skill already leads, those stay with the repository's rules and the operator's instructions. Do not trigger on a bare 'continue'; trigger on resuming a coordinated topic or dossier."
+description: "Use when leading multi-session technical work: research, options with trade-offs, decisions, a reviewed plan and execution, kept in a dossier that lets a fresh session resume from one command. Also use when resuming a coordinated topic from its dossier, applying a topic's knowledge-base ledger, or taking over a running project. Covers delegated research, verifying decisive facts at the source, independent review, approval cards and honest continuation. Not for a quick question, a lookup or a small change, even one that ends in a merge or deploy: unless invoked by name or part of a topic this skill already leads, those stay with the repository's rules and the operator's instructions. Do not trigger on a bare 'continue'; trigger on resuming a coordinated topic or dossier."
 ---
 
 # Project coordination
@@ -41,7 +41,7 @@ Stop each phase at the depth the operator asked for; plan and implement only aft
 4. **Plan** in independently verifiable slices with acceptance criteria and a change map; short, frozen once accepted.
 5. **Plan review** by an independent reviewer; effort follows rollback cost.
 6. **Execution**, when in scope: an author per slice in its own worktree, independent code review, the real-data check before production, your own verification of the outcome, an approval card before every action reserved to a person. Phases 4 to 6: `references/plan-and-approval.md`, `references/team-and-review.md`.
-7. **Close** a working block or the topic: card rewritten, change map current, dossier pushed; durable knowledge moved where it belongs (the team's knowledge base through its own process, repository docs) or listed as follow-ups; ticket note; card phase "closed - done" or "closed - abandoned: <reason>".
+7. **Close** a working block or the topic: card rewritten, change map current, dossier pushed; knowledge the team's knowledge base lacks or contradicts recorded as K entries and applied by a knowledge-base session (`references/dossier.md`), open ones staying on the card until it has marked them all; repository docs updated or listed as follow-ups; the topic's ticket, if any, closed with one line and a link to the dossier or pull request; card phase "closed - done" or "closed - abandoned: <reason>".
 
 ## Sessions: hand off and resume
 
@@ -56,6 +56,8 @@ Use the project-coordination skill: resume topic <repository>:<path> at commit <
 ```
 
 Name the repository so that a fresh session on another machine can fetch it: `owner/name` on its hosting service, or the URL `git remote get-url origin` prints; never a local directory or checkout name. The card's Resume line names the skill and the dossier location only (it cannot name its own commit); the handoff line always ends `at commit <sha>`. Build the handoff line after the push, from the commit that push produced (the dossier commit just pushed); never copy it from the card's Resume line. The resume procedure is in `references/dossier.md`.
+
+A topic with open K entries at closure or a milestone also gets the knowledge-base session line (`references/dossier.md`), in a fenced `text` block like the resume line.
 
 ## Ending a turn
 
@@ -108,6 +110,6 @@ Expected shape: follow the resume procedure, tell the operator the state, then c
 
 - `references/research-and-decisions.md`: intake, research workers, facts, options, decisions.
 - `references/plan-and-approval.md`: plan, gates, change map, plan review, approval card, real-data check.
-- `references/dossier.md`: layout, records, IDs and links, card, resume procedure, costs.
+- `references/dossier.md`: layout, records, IDs and links, card, resume procedure, knowledge-base ledger and session, costs.
 - `references/team-and-review.md`: roles, briefs, returns, review, budget, saving context.
 - `references/capabilities-and-continuation.md`: capability levels and honest continuation.
