@@ -18,12 +18,13 @@ The dossier is the coordination record of one topic: what was asked, answered, d
 | 04-options.md | options against constraints, proposals |
 | 05-plan.md | S, G, A; frozen once accepted |
 | 06-worklog.md | append-only, one entry per step |
+| 07-kb-ledger.md | K: knowledge the topic established that the team's knowledge base lacks or contradicts |
 | costs.md | optional, see below |
 | `research/` | one report per research question, written by its worker |
 | `reviews/` | one file per review round: findings plus the coordinator's disposition of each |
 | `evidence/` | raw outputs that support a decision; never secrets |
 
-**ID legend:** C constraint, F fact, D decision, Q open question, FU follow-up, M change-map element, S slice, G gate, A acceptance criterion.
+**ID legend:** C constraint, F fact, D decision, Q open question, FU follow-up, K knowledge-base ledger entry, M change-map element, S slice, G gate, A acceptance criterion.
 
 ## One owner per fact
 
@@ -51,6 +52,8 @@ Short rows; one example each, synthetic.
   `| <a id="d3"></a>D3 | 2026-03-03 | Keep the existing queue library | C1, F2 | Accepted by operator |`
 - **Q**: id, question, owner, how it will be closed. Close in place: strike it through and add the answer and the D id. Every operator answer is recorded as a D.
 - **FU**: id, follow-up, owner.
+- **K**: id, what (one line), where in the knowledge base (page, or "new page under X"), evidence (F id or source), verdict (Missing, Contradicted or Incomplete; a Confirmed fact or one outside the knowledge base's scope is not entered), status (open / applied / rejected with the reason), applied in (knowledge-base reference, or the reason).
+  `| <a id="k1"></a>K1 | Nightly sync window is 02:00-04:00 | page "Batch jobs" | F2 | Contradicted | applied | page "Batch jobs", revision of 2026-03-09 |`
 - **M**: id, element, where (repository, path or resource), new, changed or removed, why (C or D ids), depends on, status per environment, PR, who maintains, how to check, how to undo. Names of secrets only, never values.
 - **Worklog entry**: date and short title; what was checked and how; what was found; operator inputs and decisions. Every outward or state-changing effect (branch pushed, PR opened, comment posted, ticket changed, job started, deploy, message sent) is recorded here with its identifier when it happens, before the step ends; in-flight items are also on the card.
 
@@ -103,6 +106,25 @@ Whenever the next step needs a new session, or a turn in a topic that spans sess
 6. Before acting, tell the operator in a few lines: phase, what is live, what waits on whom, the next action. Until that is said, change nothing but the local checkout.
 
 A pause recorded in the card still holds.
+
+## Knowledge-base session
+
+At closure, or at a milestone with open K entries, the coordinator gives one copy-paste line, built after the push like the handoff line:
+
+```text
+Use the project-coordination skill: apply the knowledge-base ledger of topic <repository>:<path> at commit <sha>.
+```
+
+That session:
+
+1. Opens the location and checks the commit as in resume steps 1 and 2.
+2. Reads only the ledger and the F entries it cites, not the whole dossier.
+3. Re-verifies each entry at its source. If the source changed, rejects the entry with the reason or corrects it.
+4. Applies it through the knowledge base's own procedure if it has one, and only within its grant: writing to a knowledge base is a write.
+5. Marks each entry applied (with the reference) or rejected (with the reason), adds one worklog entry, commits and pushes.
+6. Ends as SKILL.md "Ending a turn" says.
+
+It does not reopen decisions or edit other registers. A trivial fix the coordinator may make anyway is made inline and recorded in the worklog, not in the ledger.
 
 ## Cost register (optional)
 
