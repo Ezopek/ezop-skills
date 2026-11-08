@@ -31,7 +31,7 @@ Each changing fact lives in exactly one owner file; elsewhere only its ID or a l
 
 ## IDs, anchors and links
 
-Every ID row starts with an HTML anchor named by the lowercase ID, for example `| <a id="d3"></a>D3 | ... |`; slice headings carry one too. Every mention of an ID in text the operator or a stakeholder reads (chat messages, the card, PR descriptions, ticket text) is a link to its anchor in the pushed dossier: an absolute URL outside the dossier, a relative link inside it. Without a web URL, make the ID a Markdown link to the file's repository-relative path with the anchor, for example `docs/coordination/x/01-decisions-and-questions.md#d3`. The first mention in a text carries a gloss of a few words:
+Every ID row starts with an HTML anchor named by the lowercase ID, for example `| <a id="d3"></a>D3 | ... |`; slice headings carry one too. Every mention of an ID in text the operator or a stakeholder reads (chat messages, the card, PR descriptions, ticket text) is a link to its anchor in the dossier: an absolute URL outside the dossier, a relative link inside it. Without a web URL, make the ID a Markdown link to the file's repository-relative path with the anchor, for example `docs/coordination/x/01-decisions-and-questions.md#d3`. The first mention in a text carries a gloss of a few words:
 
 ```text
 [D3](https://example.org/dossiers/20260303-invoice-sync/01-decisions-and-questions.md#d3) (keep the existing proxy)
@@ -93,7 +93,7 @@ Inside a real dossier these card links are relative; the example uses absolute U
 
 ## Resume procedure
 
-Whenever the next step needs a new session, give exactly one copy-paste line naming this skill, the dossier location (repository plus path) and the pushed commit, preceded by the client's own new-session command if it has one. The card carries the same line without the commit.
+Whenever the next step needs a new session, or a turn in a topic that spans sessions ends waiting on the operator, give exactly one copy-paste line naming this skill, the dossier location (repository plus path) and the pushed commit (none for the operator-held copy of SKILL.md standing rule 9), preceded by the client's own new-session command if it has one. The card carries the same line without the commit.
 
 1. Open the location in the command; fetch (or clone, over the project's usual transport) its repository and work at the remote tip. If it cannot be opened, say so and ask the operator for the location; never propose another topic in its place.
 2. If the command names a commit, check that the remote tip contains it. If not, stop and say the previous session did not push its handoff.

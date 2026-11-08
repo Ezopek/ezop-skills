@@ -44,7 +44,7 @@ A method for writing a skill, proving it changes behaviour, and revising in prop
 
 ### project-coordination
 
-Lets you hand multi-session technical work to an agent that leads it and keeps a dossier, so a fresh session can resume from one line. It is proportionate on purpose: a trivial task is simply done, a small change that repeats an existing precedent takes a fast path, and only open design or substantial change uses the full path.
+Lets you hand multi-session technical work to an agent that leads it and keeps a dossier, so a fresh session can resume from one line. It is proportionate on purpose: a trivial task is simply done, a small change that repeats an existing precedent takes a fast path when you invoke the skill for it, and only open design or substantial change uses the full path.
 
 - **Research is delegated and verified.** Independent questions go to research workers that write their own reports; whatever decides a choice is checked at the source, not taken from notes. Authority follows ownership and evidence, not recency.
 - **Options and decisions with you.** Every option is judged against every recorded constraint, with a recommendation. You choose, and each answer is recorded as a decision. Mechanisms such as approvals, gates, locks or new services are added only when a recorded constraint, decision or binding rule calls for them.

@@ -1,6 +1,6 @@
 ---
 name: project-coordination
-description: "Use when leading multi-session technical work: research, options with trade-offs, decisions, a reviewed plan and execution, kept in a dossier that lets a fresh session resume from one command. Also use when resuming a coordinated topic from its dossier or taking over a running project, and for the fast path: a small change, even in one file, that repeats an existing precedent and leads to an action reserved to a person (merge, deploy, production change). Covers delegated research, verifying decisive facts at the source, independent review, approval cards and honest continuation. Not for a quick question, a lookup or a small fix that prepares no merge, deploy or production change. Do not trigger on a bare 'continue'; trigger on resuming a coordinated topic or dossier."
+description: "Use when leading multi-session technical work: research, options with trade-offs, decisions, a reviewed plan and execution, kept in a dossier that lets a fresh session resume from one command. Also use when resuming a coordinated topic from its dossier or taking over a running project. Covers delegated research, verifying decisive facts at the source, independent review, approval cards and honest continuation. Not for a quick question, a lookup or a small change, even one that ends in a merge or deploy: unless invoked by name or part of a topic this skill already leads, those stay with the repository's rules and the operator's instructions. Do not trigger on a bare 'continue'; trigger on resuming a coordinated topic or dossier."
 ---
 
 # Project coordination
@@ -14,7 +14,7 @@ This skill is guidance only: it enforces, installs and schedules nothing.
 ## Choose the path
 
 1. **Trivial or single bounded task** whose result does not lead to a merge, deploy or other action reserved to a person: just do it. This skill adds nothing.
-2. **Fast path**: decided after a short read-only look, when the change repeats a precedent that already exists in the project (this includes a one-file change that repeats a precedent and leads to an action reserved to a person), is reversible within minutes without data loss and without another team, and uses a known mechanism (no new component, tool, vendor feature or permission model). It skips options, plan, plan review, change map and the full dossier. It keeps: decisive facts verified at the source, an isolated worktree or branch, independent review, an approval card before any action reserved to a person, the real-data check with a positive control before production, and a short closing note. If it spans sessions, keep only the dossier README with the card. Switch to the full path yourself, and say so, when a fact changes requirements, scope or approach; the change needs something the precedent lacks; reversibility cannot be shown at the source; a decision above the operator is needed; or review still finds a blocking defect after the fix.
+2. **Fast path**: decided after a short read-only look, when the change repeats a precedent that already exists in the project (this includes a one-file change that repeats a precedent and leads to an action reserved to a person), is reversible within minutes without data loss and without another team, and uses a known mechanism (no new component, tool, vendor feature or permission model). It skips options, plan, plan review, change map and the full dossier. It keeps: decisive facts verified at the source, an isolated worktree or branch, independent review, an approval card before any action reserved to a person, the real-data check with a positive control before production, and a short closing note. It applies once this skill is already leading the topic or the operator invokes it by name; it does not engage on its own for a small change, and for small tasks outside that, review and the approval card before a merge or deploy belong to the repository's rules and the operator's global instructions, not to this skill. If it spans sessions, keep only the dossier README with the card. Switch to the full path yourself, and say so, when a fact changes requirements, scope or approach; the change needs something the precedent lacks; reversibility cannot be shown at the source; a decision above the operator is needed; or review still finds a blocking defect after the fix.
 3. **Full path**: open design or substantial change. Phases below.
 
 ## Standing rules
@@ -49,13 +49,13 @@ One session covers a working block, not a whole topic: the coordinator's context
 
 Handoff: let running workers finish (or stop them); settle what takes one answer now and record the rest; rewrite the card, commit, push; offer the resume command last.
 
-Whenever the next step needs a new session, give exactly one copy-paste line naming this skill, the dossier location a fresh session can open (repository plus path, or a URL) and the pushed commit, preceded by the client's own new-session command if it has one:
+Whenever the next step needs a new session, or a turn in a topic that spans sessions ends waiting on the operator, give exactly one copy-paste line naming this skill, the dossier location a fresh session can open (repository plus path, or a URL) and the pushed commit, preceded by the client's own new-session command if it has one:
 
 ```text
 Use the project-coordination skill: resume topic <repository>:<path> at commit <sha>.
 ```
 
-Name the repository so that a fresh session on another machine can fetch it: `owner/name` on its hosting service, or the URL `git remote get-url origin` prints; never a local directory or checkout name. The card's Resume line names the skill and the dossier location only (it cannot name its own commit); the handoff line always ends `at commit <sha>`. The resume procedure is in `references/dossier.md`.
+Name the repository so that a fresh session on another machine can fetch it: `owner/name` on its hosting service, or the URL `git remote get-url origin` prints; never a local directory or checkout name. The card's Resume line names the skill and the dossier location only (it cannot name its own commit); the handoff line always ends `at commit <sha>`, except with the operator-held copy of standing rule 9, which has no pushed commit. The resume procedure is in `references/dossier.md`.
 
 ## Ending a turn
 
@@ -68,7 +68,9 @@ End in one of these states, in plain words:
 
 Never say "nothing to do" while authorised work remains; advance independent work when one item is blocked.
 
-**Waiting on you.** While anything waits on the operator (a question, a decision, an approval card, a command to run, information), every final message ends with a section so headed, in the operator's language, listing each item again in full: the question with its labelled options and your recommendation, the copy-paste command, the card, and what each item blocks. Never "see above"; a long draft may be referenced by its file. If nothing waits on the operator, say so in one line and name what you wait for.
+**Waiting on you.** While anything waits on the operator (a question, a decision, an approval card, a command to run, information), every final message ends with a section so headed, in the operator's language, listing each item again in full: the question with its labelled options and your recommendation, the copy-paste command, the card, and what each item blocks. Never "see above"; a long draft may be referenced by its file. If nothing waits on the operator, say so in one line and name what you wait for. In a topic that spans sessions, a final message that waits on the operator ends with the handoff line as its last item: with `at commit <sha>`, or without it for the operator-held copy of standing rule 9.
+
+**IDs.** Every ID mentioned in a final message (D1, Q1, C1, F1 and so on) is a link to its anchor in the dossier, with a short gloss at first mention. If the dossier has no web URL, use a Markdown link to the file's repository-relative path with the anchor, for example `docs/coordination/<topic>/01-decisions-and-questions.md#d3`. Details: `references/dossier.md`.
 
 ## Examples
 
