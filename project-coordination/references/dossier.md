@@ -52,7 +52,7 @@ Short rows; one example each, synthetic.
   `| <a id="d3"></a>D3 | 2026-03-03 | Keep the existing queue library | C1, F2 | Accepted by operator |`
 - **Q**: id, question, owner, how it will be closed. Close in place: strike it through and add the answer and the D id. Every operator answer is recorded as a D.
 - **FU**: id, follow-up, owner, tracker link. If the operator keeps a ticket tracker, file each FU there when it is recorded and put the link in the row.
-  A ticket is an initiator and a handoff, not a status mirror: open it when the FU is recorded or the topic requested; close it when the topic closes, with one line and a link to the dossier or pull request. No progress comments; the card holds the status.
+  A ticket is an initiator and a handoff, not a status mirror: open it when the FU is recorded or the topic requested; close it when the topic that does the work closes, with one line and a link to the dossier or pull request. No progress comments; the card holds the status.
 - **K**: id, what (one line), where in the knowledge base (page, or "new page under X"), evidence (F id or source), verdict (Missing, Contradicted or Incomplete; a Confirmed fact or one outside the knowledge base's scope is not entered), status (open / applied / rejected with the reason), applied in (knowledge-base reference, or the reason).
   `| <a id="k1"></a>K1 | Nightly sync window is 02:00-04:00 | page "Batch jobs" | F2 | Contradicted | applied | page "Batch jobs", revision of 2026-03-09 |`
 - **M**: id, element, where (repository, path or resource), new, changed or removed, why (C or D ids), depends on, status per environment, PR, who maintains, how to check, how to undo. Names of secrets only, never values.
