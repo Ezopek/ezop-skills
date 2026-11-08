@@ -31,7 +31,7 @@ Each changing fact lives in exactly one owner file; elsewhere only its ID or a l
 
 ## IDs, anchors and links
 
-Every ID row starts with an HTML anchor named by the lowercase ID, for example `| <a id="d3"></a>D3 | ... |`; slice headings carry one too. Every mention of an ID in text the operator or a stakeholder reads (chat messages, the card, PR descriptions, ticket text) is a link to its anchor in the dossier: an absolute URL outside the dossier, a relative link inside it. Without a web URL, make the ID a Markdown link to the file's repository-relative path with the anchor, for example `docs/coordination/x/01-decisions-and-questions.md#d3`. The first mention in a text carries a gloss of a few words:
+Every ID row starts with an HTML anchor named by the lowercase ID, for example `| <a id="d3"></a>D3 | ... |`; slice headings carry one too. Every mention of an ID in text the operator or a stakeholder reads (chat messages, the card, PR descriptions, ticket text) is a link to its anchor in the pushed dossier: an absolute URL outside the dossier, a relative link inside it. Without a web URL, make the ID a Markdown link to the file's repository-relative path with the anchor, for example `docs/coordination/x/01-decisions-and-questions.md#d3`. The first mention in a text carries a gloss of a few words:
 
 ```text
 [D3](https://example.org/dossiers/20260303-invoice-sync/01-decisions-and-questions.md#d3) (keep the existing proxy)
@@ -58,7 +58,7 @@ Short rows; one example each, synthetic.
 
 One coordinator per topic at a time; a topic changes hands only by a session handoff. The coordinator owns the card and every register. A research or verification worker writes only its assigned report file and returns a short summary with the path. Reviewers write nothing in the dossier; the coordinator records the verdict, or routes review output straight into the round file. Each coordinator works in its own worktree or checkout of the dossier repository; topics live in separate directories, so rebasing onto other coordinators' pushes is routine. There is no shared index of topics: the directory listing plus each card's As of line is the index.
 
-Commit and push at the end of each step (a decision, a review round's disposition, a slice, a handoff), not per edit and not only at the end. An unpushed dossier is not a handoff, except the operator-held copy described in SKILL.md standing rule 9. Follow the dossier repository's own rules for commit style and push.
+Commit and push at the end of each step (a decision, a review round's disposition, a slice, a handoff), not per edit and not only at the end. An unpushed dossier is not a handoff. Follow the dossier repository's own rules for commit style and push.
 
 **Language.** What the operator and stakeholders read (README and card, options, decisions, plan, change map, approval cards) is in the operator's language. Agent-facing records (facts, worklog, research reports, evidence) are in English unless the repository has its own convention; confirm once. Identifiers, commands and paths stay verbatim.
 
@@ -93,10 +93,10 @@ Inside a real dossier these card links are relative; the example uses absolute U
 
 ## Resume procedure
 
-Whenever the next step needs a new session, or a turn in a topic that spans sessions ends waiting on the operator, give exactly one copy-paste line naming this skill, the dossier location (repository plus path) and the pushed commit (none for the operator-held copy of SKILL.md standing rule 9), preceded by the client's own new-session command if it has one. The card carries the same line without the commit.
+Whenever the next step needs a new session, or a turn in a topic that spans sessions ends waiting on the operator, give exactly one copy-paste line naming this skill, the dossier location (repository plus path) and the pushed commit, preceded by the client's own new-session command if it has one. The card carries the same line without the commit.
 
 1. Open the location in the command; fetch (or clone, over the project's usual transport) its repository and work at the remote tip. If it cannot be opened, say so and ask the operator for the location; never propose another topic in its place.
-2. If the command names a commit, check that the remote tip contains it. If not, stop and say the previous session did not push its handoff.
+2. If the command names a commit, check that the remote tip contains it. If not, stop and say the previous session did not push its handoff. When resuming from card text the operator pasted, skip the fetch and the commit check.
 3. Read the card, then the goal-and-constraints file (authority, constraints, pauses), then the decisions and questions and, from planning on, the change map. Open the plan only at the slice the next step needs. Delegate heavier reading to read-only workers where available.
 4. Check every in-flight item and every effect in the worklog by its recorded identifier: finished, running or lost. Never repeat an effect that already happened. A worker recorded as in flight after a crash is presumed dead: its output counts only if complete; otherwise restart it from a brief rebuilt from the dossier.
 5. Re-check read-only the live state the next action depends on.

@@ -27,7 +27,7 @@ This skill is guidance only: it enforces, installs and schedules nothing.
 6. **One coordinator per topic; write boundaries.** A topic changes hands only by a session handoff. Every worker gets an explicit write boundary; parallel work never shares a checkout; never hand a worker a grant you do not hold.
 7. **Independent review.** The author never reviews; prefer a different model family. A finding is a lead: verify it at the source before acting (`references/team-and-review.md`).
 8. **Every added mechanism cites its source.** Approval, gate, role, lock, durable state, recovery step, new service or background component must name a constraint, decision or binding rule, and take the narrowest scope. Otherwise omit it or ask first. If the `scope-discipline` skill is installed, load it when designing options and when a fix would add a mechanism; without it, apply this rule.
-9. **Keep the dossier current and pushed.** Commit and push at the end of each step to the location agreed when framing, where the grant allows writing; a dossier not pushed to the agreed location is no handoff on its own. If no shared location is allowed, the handoff is the copy the operator holds: give them the dossier (or its card and registers) with the resume line, and say plainly that resuming depends on them providing it (`references/dossier.md`).
+9. **Keep the dossier current and pushed.** Commit and push at the end of each step to the location agreed when framing, where the grant allows writing; a dossier not pushed to the agreed location is no handoff on its own. If no shared location is allowed, say plainly that there is no durable handoff, and give the operator the card text and its Resume line to keep (`references/dossier.md`).
 10. **Honest continuation.** Notes, cards, queued jobs and scheduled tasks are records, not wakes. Never promise a wake or callback you have not seen work; name what resumes the work (`references/capabilities-and-continuation.md`).
 
 ## Full path
@@ -55,7 +55,7 @@ Whenever the next step needs a new session, or a turn in a topic that spans sess
 Use the project-coordination skill: resume topic <repository>:<path> at commit <sha>.
 ```
 
-Name the repository so that a fresh session on another machine can fetch it: `owner/name` on its hosting service, or the URL `git remote get-url origin` prints; never a local directory or checkout name. The card's Resume line names the skill and the dossier location only (it cannot name its own commit); the handoff line always ends `at commit <sha>`, except with the operator-held copy of standing rule 9, which has no pushed commit. The resume procedure is in `references/dossier.md`.
+Name the repository so that a fresh session on another machine can fetch it: `owner/name` on its hosting service, or the URL `git remote get-url origin` prints; never a local directory or checkout name. The card's Resume line names the skill and the dossier location only (it cannot name its own commit); the handoff line always ends `at commit <sha>`. The resume procedure is in `references/dossier.md`.
 
 ## Ending a turn
 
@@ -68,9 +68,9 @@ End in one of these states, in plain words:
 
 Never say "nothing to do" while authorised work remains; advance independent work when one item is blocked.
 
-**Waiting on you.** While anything waits on the operator (a question, a decision, an approval card, a command to run, information), every final message ends with a section so headed, in the operator's language, listing each item again in full: the question with its labelled options and your recommendation, the copy-paste command, the card, and what each item blocks. Never "see above"; a long draft may be referenced by its file. If nothing waits on the operator, say so in one line and name what you wait for. In a topic that spans sessions, a final message that waits on the operator ends with the handoff line as its last item: with `at commit <sha>`, or without it for the operator-held copy of standing rule 9.
+**Waiting on you.** While anything waits on the operator (a question, a decision, an approval card, a command to run, information), every final message ends with a section so headed, in the operator's language, listing each item again in full: the question with its labelled options and your recommendation, the copy-paste command, the card, and what each item blocks. Never "see above"; a long draft may be referenced by its file. If nothing waits on the operator, say so in one line and name what you wait for. In a topic that spans sessions, a final message that waits on the operator ends with the handoff line, including `at commit <sha>`, as its last item.
 
-**IDs.** Every ID mentioned in a final message (D1, Q1, C1, F1 and so on) is a link to its anchor in the dossier, with a short gloss at first mention. If the dossier has no web URL, use a Markdown link to the file's repository-relative path with the anchor, for example `docs/coordination/<topic>/01-decisions-and-questions.md#d3`. Details: `references/dossier.md`.
+**IDs.** Every ID mentioned in a final message (D1, Q1, C1, F1 and so on) is a link to its anchor in the pushed dossier, with a short gloss at first mention. If the dossier has no web URL, use a Markdown link to the file's repository-relative path with the anchor, for example `docs/coordination/<topic>/01-decisions-and-questions.md#d3`. Details: `references/dossier.md`.
 
 ## Examples
 
