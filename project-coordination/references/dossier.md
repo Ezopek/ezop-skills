@@ -18,7 +18,7 @@ The dossier is the coordination record of one topic: what was asked, answered, d
 | 04-options.md | options against constraints, proposals |
 | 05-plan.md | S, G, A; frozen once accepted |
 | 06-worklog.md | append-only, one entry per step |
-| 07-kb-ledger.md | K: knowledge the topic established that the team's knowledge base lacks or contradicts |
+| 07-kb-ledger.md | K: knowledge the topic established that the team's knowledge base lacks or contradicts; add an entry when it is found |
 | costs.md | optional, see below |
 | `research/` | one report per research question, written by its worker |
 | `reviews/` | one file per review round: findings plus the coordinator's disposition of each |
@@ -109,7 +109,7 @@ A pause recorded in the card still holds.
 
 ## Knowledge-base session
 
-At closure, or at a milestone with open K entries, the coordinator gives one copy-paste line, built after the push like the handoff line:
+At closure or at a milestone, when K entries are open, the coordinator gives one copy-paste line, built after the push like the handoff line:
 
 ```text
 Use the project-coordination skill: apply the knowledge-base ledger of topic <repository>:<path> at commit <sha>.
