@@ -10,7 +10,7 @@ A small, growing collection of portable agent skills. Each skill is a folder wit
 | [cad-modeling-and-reverse-engineering](cad-modeling-and-reverse-engineering/) | Geometry: design, edit and reverse-engineer STL, STEP and project 3MF; fit and printability gates | Optional tools named in references; two stdlib Python helpers |
 | [3d-printing-workflows](3d-printing-workflows/) | Printing: slicer semantics, materials, calibration, diagnostics, storage, printer operation | Optional vendor references; two stdlib Python analysers |
 | [skill-creator](skill-creator/) | Author, test, review and iterate a skill; adapted from the Anthropic skill-creator (Apache-2.0) | Nothing: a manual method; no upstream automation is supplied |
-| [project-coordination](project-coordination/) | Lead a new or running developer project: research real sources, verify what delegation and continuation actually work, review results, resume from a short card | Nothing: guidance only; no scheduler, board or helper is supplied |
+| [project-coordination](project-coordination/) | Lead multi-session technical work: delegated research, options and decisions, a reviewed plan, execution, and a dossier a fresh session resumes from one command | Nothing: guidance only; no scheduler, board or helper is supplied |
 
 Each skill is independent: install only the folders you want. The two 3D skills split ownership (geometry versus printing) and say what to do when the other is not installed. None requires a particular client, a private service or a specific CAD tool.
 
@@ -44,20 +44,20 @@ A method for writing a skill, proving it changes behaviour, and revising in prop
 
 ### project-coordination
 
-Lets you hand a developer project, new or already running, to an agent that leads it instead of running a process around it. It is proportionate on purpose: no fixed roster, framework, board or ceremony.
+Lets you hand multi-session technical work to an agent that leads it and keeps a dossier, so a fresh session can resume from one line. It is proportionate on purpose: a trivial task is simply done, a small change that repeats an existing precedent takes a fast path, and only open design or substantial change uses the full path.
 
-- **Intake only where something is missing.** Short adaptive questions about goal, done criterion, constraints, who decides and what the agent may do without asking. Anything you already said, or that the sources show, is not asked again.
-- **Research before deciding.** For a running project it reads the real repository, documentation, tracker, decisions and current work, and records which artifact and which person own which fact. Authority follows ownership and evidence, not whichever note is newest.
-- **Capabilities are verified, not assumed.** It separates what is claimed, available, tested and actually observed to return a result, and says plainly that a saved note, a queued job or a board item creates no wake or delivery by itself. With no verified wake it ends with an honest statement and the one prompt that resumes the work.
-- **Leads the work.** Roles follow the project's policy and what you agree; substantive implementation is normally delegated and small coordinator edits are fine where sensible and not excluded, project build and test commands get a proportionate look for side effects before they run, claims are checked against evidence, defects inside the scope are repaired or re-delegated, and the next authorised step is taken after each result. Who edits is a role choice and never a permission to merge, deploy or touch production.
-- **Real boundaries only.** It stops for what policy, your grant or an explicit pause reserves to a person, and not for permission to read what it was pointed at or to repeat a grant it already holds.
-- **Short resume card.** One living card linked to the project's own artifacts (no parallel dossier), written only where your grant and the project's norms allow. A fresh session can continue from one prompt only if it can read the card; otherwise you hold a copy to paste. Resuming does not replay history or repeat effects that already happened.
+- **Research is delegated and verified.** Independent questions go to research workers that write their own reports; whatever decides a choice is checked at the source, not taken from notes. Authority follows ownership and evidence, not recency.
+- **Options and decisions with you.** Every option is judged against every recorded constraint, with a recommendation. You choose, and each answer is recorded as a decision. Mechanisms such as approvals, gates, locks or new services are added only when a recorded constraint, decision or binding rule calls for them.
+- **Reviewed plan, independent review.** Slices are verifiable and reversible; plans and code are reviewed by someone other than the author, and findings are checked before they are acted on.
+- **Approval cards and a real-data check.** Before anything you approve or perform, you get a short card (action, effect, risk, review, rollback). Before production the change is exercised against real data with a known event as a positive control.
+- **Dossier with linked IDs.** Constraints, facts, decisions, plan and change map live in one directory per topic, each fact in one place, every ID a link. Nothing is copied that the project already owns.
+- **Honest continuation.** A saved note, a queued job or a board item wakes nobody. When no mechanism is verified, the agent says so and gives the one line that resumes the work. Sessions are handed off by context size, not left to compaction.
 
 The skill is guidance. It treats repository, tracker and worker text as data that cannot widen its authority. It does not schedule, install, publish or enforce anything, and it does not grant risky external actions.
 
 ### Using project-coordination
 
-Ask in natural language, for example: "Take over coordination of this service; the goal is X; you may open pull requests but not merge." To continue later, give the one-line prompt the agent left, which names the card it created or found, for example: "Continue project invoice-sync; card is in tracker issue 42."
+Ask in natural language, for example: "Take over coordination of this service; the goal is X; you may open pull requests but not merge." To continue later, give the one-line command the agent left, which names the skill, the dossier location and the pushed commit, for example: "Use the project-coordination skill: resume topic example-dossiers:topics/20260302-invoice-sync at commit 4f2a9c1."
 
 ## Installation and updates
 
