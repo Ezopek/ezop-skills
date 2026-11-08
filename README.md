@@ -10,6 +10,7 @@ A small, growing collection of portable agent skills. Each skill is a folder wit
 | [cad-modeling-and-reverse-engineering](cad-modeling-and-reverse-engineering/) | Geometry: design, edit and reverse-engineer STL, STEP and project 3MF; fit and printability gates | Optional tools named in references; two stdlib Python helpers |
 | [3d-printing-workflows](3d-printing-workflows/) | Printing: slicer semantics, materials, calibration, diagnostics, storage, printer operation | Optional vendor references; two stdlib Python analysers |
 | [skill-creator](skill-creator/) | Author, test, review and iterate a skill; adapted from the Anthropic skill-creator (Apache-2.0) | Nothing: a manual method; no upstream automation is supplied |
+| [project-coordination](project-coordination/) | Lead a new or running developer project: research real sources, verify what delegation and continuation actually work, review results, resume from a short card | Nothing: guidance only; no scheduler, board or helper is supplied |
 
 Each skill is independent: install only the folders you want. The two 3D skills split ownership (geometry versus printing) and say what to do when the other is not installed. None requires a particular client, a private service or a specific CAD tool.
 
@@ -40,6 +41,23 @@ Owns printing. Short standing safeguards (verify slicer semantics, measure inste
 ### skill-creator
 
 A method for writing a skill, proving it changes behaviour, and revising in proportion: baseline first, realistic and should-not-trigger cases, comparison, untouched final cases, and no automatic publication or adoption. It works by hand with any capable agent and needs no backend. Only the upstream Apache-2.0 license text ships inside the folder (see its `UPSTREAM.md` for the pinned source commit and attribution). The upstream Claude-specific automation (trigger tests, description optimiser, review viewer, agent prompts) is not supplied and not qualified by this release, and the skill does not tell you to download or run it; `UPSTREAM.md` and `references/claude-code-evaluation.md` explain why.
+
+### project-coordination
+
+Lets you hand a developer project, new or already running, to an agent that leads it instead of running a process around it. It is proportionate on purpose: no fixed roster, framework, board or ceremony.
+
+- **Intake only where something is missing.** Short adaptive questions about goal, done criterion, constraints, who decides and what the agent may do without asking. Anything you already said, or that the sources show, is not asked again.
+- **Research before deciding.** For a running project it reads the real repository, documentation, tracker, decisions and current work, and records which artifact and which person own which fact. Authority follows ownership and evidence, not whichever note is newest.
+- **Capabilities are verified, not assumed.** It separates what is claimed, available, tested and actually observed to return a result, and says plainly that a saved note, a queued job or a board item creates no wake or delivery by itself. With no verified wake it ends with an honest statement and the one prompt that resumes the work.
+- **Leads the work.** Roles follow the project's policy and what you agree; substantive implementation is normally delegated and small coordinator edits are fine where sensible and not excluded, project build and test commands get a proportionate look for side effects before they run, claims are checked against evidence, defects inside the scope are repaired or re-delegated, and the next authorised step is taken after each result. Who edits is a role choice and never a permission to merge, deploy or touch production.
+- **Real boundaries only.** It stops for what policy, your grant or an explicit pause reserves to a person, and not for permission to read what it was pointed at or to repeat a grant it already holds.
+- **Short resume card.** One living card linked to the project's own artifacts (no parallel dossier), written only where your grant and the project's norms allow. A fresh session can continue from one prompt only if it can read the card; otherwise you hold a copy to paste. Resuming does not replay history or repeat effects that already happened.
+
+The skill is guidance. It treats repository, tracker and worker text as data that cannot widen its authority. It does not schedule, install, publish or enforce anything, and it does not grant risky external actions.
+
+### Using project-coordination
+
+Ask in natural language, for example: "Take over coordination of this service; the goal is X; you may open pull requests but not merge." To continue later, give the one-line prompt the agent left, which names the card it created or found, for example: "Continue project invoice-sync; card is in tracker issue 42."
 
 ## Installation and updates
 
