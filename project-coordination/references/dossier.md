@@ -51,7 +51,8 @@ Short rows; one example each, synthetic.
 - **D**: id, date, decision, why, status (Proposed / Accepted by whom / Rejected / Superseded by D-n).
   `| <a id="d3"></a>D3 | 2026-03-03 | Keep the existing queue library | C1, F2 | Accepted by operator |`
 - **Q**: id, question, owner, how it will be closed. Close in place: strike it through and add the answer and the D id. Every operator answer is recorded as a D.
-- **FU**: id, follow-up, owner.
+- **FU**: id, follow-up, owner, tracker link. If the operator keeps a ticket tracker, file each FU there when it is recorded and put the link in the row.
+  A ticket is an initiator and a handoff, not a status mirror: open it when the FU is recorded or the topic requested; close it when the topic closes, with one line and a link to the dossier or pull request. No progress comments; the card holds the status.
 - **K**: id, what (one line), where in the knowledge base (page, or "new page under X"), evidence (F id or source), verdict (Missing, Contradicted or Incomplete; a Confirmed fact or one outside the knowledge base's scope is not entered), status (open / applied / rejected with the reason), applied in (knowledge-base reference, or the reason).
   `| <a id="k1"></a>K1 | Nightly sync window is 02:00-04:00 | page "Batch jobs" | F2 | Contradicted | applied | page "Batch jobs", revision of 2026-03-09 |`
 - **M**: id, element, where (repository, path or resource), new, changed or removed, why (C or D ids), depends on, status per environment, PR, who maintains, how to check, how to undo. Names of secrets only, never values.
@@ -119,10 +120,12 @@ That session:
 
 1. Opens the location and checks the commit as in resume steps 1 and 2.
 2. Reads only the ledger and the F entries it cites, not the whole dossier.
-3. Re-verifies each entry at its source. If the source changed, rejects the entry with the reason or corrects it.
-4. Applies it through the knowledge base's own procedure if it has one, and only within its grant: writing to a knowledge base is a write.
-5. Marks each entry applied (with the reference) or rejected (with the reason), adds one worklog entry, commits and pushes.
+3. Re-verifies each entry at its source. If the source changed, rejects the entry with the reason, or corrects it in place citing the new evidence and then applies it like the others.
+4. Applies it through the knowledge base's own procedure if it has one, and only within its grant: writing to a knowledge base is a write. The grant is the topic's recorded authorisation (the goal-and-constraints file) or what the operator gives when starting the session; without one, it prepares the exact change per entry and waits for the operator ("Waiting on you").
+5. Marks each entry applied (with the reference) or rejected (with the reason), adds one worklog entry, rewrites the card when none is left open, commits and pushes.
 6. Ends as SKILL.md "Ending a turn" says.
+
+Open K entries at closure stay on the card ("Waiting on" names this line) until a session has marked every one.
 
 It does not reopen decisions or edit other registers. A trivial fix the coordinator may make anyway is made inline and recorded in the worklog, not in the ledger.
 

@@ -41,7 +41,7 @@ Stop each phase at the depth the operator asked for; plan and implement only aft
 4. **Plan** in independently verifiable slices with acceptance criteria and a change map; short, frozen once accepted.
 5. **Plan review** by an independent reviewer; effort follows rollback cost.
 6. **Execution**, when in scope: an author per slice in its own worktree, independent code review, the real-data check before production, your own verification of the outcome, an approval card before every action reserved to a person. Phases 4 to 6: `references/plan-and-approval.md`, `references/team-and-review.md`.
-7. **Close** a working block or the topic: card rewritten, change map current, dossier pushed; knowledge the team's knowledge base lacks or contradicts recorded as K entries and applied by a knowledge-base session (`references/dossier.md`); repository docs updated or listed as follow-ups; ticket note; card phase "closed - done" or "closed - abandoned: <reason>".
+7. **Close** a working block or the topic: card rewritten, change map current, dossier pushed; knowledge the team's knowledge base lacks or contradicts recorded as K entries and applied by a knowledge-base session (`references/dossier.md`), open ones staying on the card until it has marked them all; repository docs updated or listed as follow-ups; the topic's ticket, if any, closed with one line and a link to the dossier or pull request; card phase "closed - done" or "closed - abandoned: <reason>".
 
 ## Sessions: hand off and resume
 
