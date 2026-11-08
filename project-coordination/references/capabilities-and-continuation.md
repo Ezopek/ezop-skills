@@ -26,7 +26,7 @@ Names vary by client and host; describe the capability, not a vendor command.
 | Asynchronous worker with a completion event | A real signal when it finishes, if observed | A started job is not an observed callback |
 | Command-line process or remote session | Work may survive the turn if the host keeps it alive | A process id proves a start, not survival or that anyone reads the output |
 | Shared board or tracker | A durable record for people and later sessions | Nothing moves until someone looks, unless a consumer is verified |
-| Scheduled or queued job | Something may run later | A queue entry is not a run; check that a runner exists and fired |
+| Scheduled or queued job | Something may run later | A queue entry is not a run; check that a runner exists and fired. Before relying on it to continue the topic, confirm that a failed run, including one that fails before the work starts, also comes back to you |
 | Notes, cards, dossier | Memory for the next session | They create no wake and no delivery |
 | No delegation at all | Full control, direct verification | Context fills faster; keep slices small and have results checked separately |
 
