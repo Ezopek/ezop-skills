@@ -10,6 +10,7 @@ A small, growing collection of portable agent skills. Each skill is a folder wit
 | [cad-modeling-and-reverse-engineering](cad-modeling-and-reverse-engineering/) | Geometry: design, edit and reverse-engineer STL, STEP and project 3MF; fit and printability gates | Optional tools named in references; two stdlib Python helpers |
 | [3d-printing-workflows](3d-printing-workflows/) | Printing: slicer semantics, materials, calibration, diagnostics, storage, printer operation | Optional vendor references; two stdlib Python analysers |
 | [skill-creator](skill-creator/) | Author, test, review and iterate a skill; adapted from the Anthropic skill-creator (Apache-2.0) | Nothing: a manual method; no upstream automation is supplied |
+| [project-coordination](project-coordination/) | Lead multi-session technical work: delegated research, options and decisions, a reviewed plan, execution, and a dossier a fresh session resumes from one command | Nothing: guidance only; no scheduler, board or helper is supplied |
 
 Each skill is independent: install only the folders you want. The two 3D skills split ownership (geometry versus printing) and say what to do when the other is not installed. None requires a particular client, a private service or a specific CAD tool.
 
@@ -40,6 +41,23 @@ Owns printing. Short standing safeguards (verify slicer semantics, measure inste
 ### skill-creator
 
 A method for writing a skill, proving it changes behaviour, and revising in proportion: baseline first, realistic and should-not-trigger cases, comparison, untouched final cases, and no automatic publication or adoption. It works by hand with any capable agent and needs no backend. Only the upstream Apache-2.0 license text ships inside the folder (see its `UPSTREAM.md` for the pinned source commit and attribution). The upstream Claude-specific automation (trigger tests, description optimiser, review viewer, agent prompts) is not supplied and not qualified by this release, and the skill does not tell you to download or run it; `UPSTREAM.md` and `references/claude-code-evaluation.md` explain why.
+
+### project-coordination
+
+Lets you hand multi-session technical work to an agent that leads it and keeps a dossier, so a fresh session can resume from one line. It is proportionate on purpose: a trivial task is simply done, a small change that repeats an existing precedent takes a fast path when you invoke the skill for it, and only open design or substantial change uses the full path.
+
+- **Research is delegated and verified.** Independent questions go to research workers that write their own reports; whatever decides a choice is checked at the source, not taken from notes. Authority follows ownership and evidence, not recency.
+- **Options and decisions with you.** Every option is judged against every recorded constraint, with a recommendation. You choose, and each answer is recorded as a decision. Mechanisms such as approvals, gates, locks or new services are added only when a recorded constraint, decision or binding rule calls for them.
+- **Reviewed plan, independent review.** Slices are verifiable and reversible; plans and code are reviewed by someone other than the author, and findings are checked before they are acted on.
+- **Approval cards and a real-data check.** Before anything you approve or perform, you get a short card (action, effect, risk, review, rollback). Before production the change is exercised against real data with a known event as a positive control.
+- **Dossier with linked IDs.** Constraints, facts, decisions, plan and change map live in one directory per topic, each fact in one place, every ID a link. Nothing is copied that the project already owns.
+- **Honest continuation.** A saved note, a queued job or a board item wakes nobody. When no mechanism is verified, the agent says so and gives the one line that resumes the work. Sessions are handed off by context size, not left to compaction.
+
+The skill is guidance. It treats repository, tracker and worker text as data that cannot widen its authority. It does not schedule, install, publish or enforce anything, and it does not grant risky external actions.
+
+### Using project-coordination
+
+Ask in natural language, for example: "Take over coordination of this service; the goal is X; you may open pull requests but not merge." To continue later, give the one-line command the agent left, which names the skill, the dossier location and the pushed commit, for example: "Use the project-coordination skill: resume topic example-org/dossiers:topics/20260302-invoice-sync at commit 4f2a9c1."
 
 ## Installation and updates
 
