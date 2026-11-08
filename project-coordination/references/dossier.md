@@ -31,7 +31,7 @@ Each changing fact lives in exactly one owner file; elsewhere only its ID or a l
 
 ## IDs, anchors and links
 
-Every ID row starts with an HTML anchor named by the lowercase ID, for example `| <a id="d3"></a>D3 | ... |`; slice headings carry one too. Every mention of an ID in text the operator or a stakeholder reads (chat messages, the card, PR descriptions, ticket text) is a link to its anchor in the pushed dossier: an absolute URL outside the dossier, a relative link inside it. The first mention in a text carries a gloss of a few words:
+Every ID row starts with an HTML anchor named by the lowercase ID, for example `| <a id="d3"></a>D3 | ... |`; slice headings carry one too. Every mention of an ID in text the operator or a stakeholder reads (chat messages, the card, PR descriptions, ticket text) is a link to its anchor in the pushed dossier: an absolute URL outside the dossier, a relative link inside it. Without a web URL, make the ID a Markdown link to the file's repository-relative path with the anchor, for example `docs/coordination/x/01-decisions-and-questions.md#d3`. The first mention in a text carries a gloss of a few words:
 
 ```text
 [D3](https://example.org/dossiers/20260303-invoice-sync/01-decisions-and-questions.md#d3) (keep the existing proxy)
@@ -75,7 +75,7 @@ Each line is at most about 120 rendered characters; omit lines the phase does no
 - **Authority**: one line (e.g. "may open PRs; merge and deploy reserved; pause: deployment") linking to the goal-and-constraints file.
 - **Waiting on**: who, what, and what it blocks.
 - **Next step**: who, one action.
-- **Resume**: the resume line naming the skill and the dossier location (repository plus path; not a commit, since the card cannot name its own).
+- **Resume**: the resume line naming the skill and the dossier location (a fetchable repository plus path, as SKILL.md names it; not a commit, since the card cannot name its own).
 - **Cost**: only if costs.md is kept.
 
 Minimal example (synthetic):
@@ -86,7 +86,7 @@ Minimal example (synthetic):
 **Authority**: may open PRs; merge and deploy reserved; pause: deployment
 **Waiting on**: operator - choose option A or B; blocks the plan
 **Next step**: coordinator - write the plan once [Q2](https://example.org/dossiers/20260303-invoice-sync/01-decisions-and-questions.md#q2) (retry policy) is answered
-**Resume**: `Use the project-coordination skill: resume topic example-dossiers:topics/20260303-invoice-sync.`
+**Resume**: `Use the project-coordination skill: resume topic example-org/dossiers:topics/20260303-invoice-sync.`
 ```
 
 Inside a real dossier these card links are relative; the example uses absolute URLs only because this file is not a dossier.
@@ -95,7 +95,7 @@ Inside a real dossier these card links are relative; the example uses absolute U
 
 Whenever the next step needs a new session, give exactly one copy-paste line naming this skill, the dossier location (repository plus path) and the pushed commit, preceded by the client's own new-session command if it has one. The card carries the same line without the commit.
 
-1. Open the location in the command; fetch (or clone, over the project's usual transport) its repository and work at the remote tip.
+1. Open the location in the command; fetch (or clone, over the project's usual transport) its repository and work at the remote tip. If it cannot be opened, say so and ask the operator for the location; never propose another topic in its place.
 2. If the command names a commit, check that the remote tip contains it. If not, stop and say the previous session did not push its handoff.
 3. Read the card, then the goal-and-constraints file (authority, constraints, pauses), then the decisions and questions and, from planning on, the change map. Open the plan only at the slice the next step needs. Delegate heavier reading to read-only workers where available.
 4. Check every in-flight item and every effect in the worklog by its recorded identifier: finished, running or lost. Never repeat an effect that already happened. A worker recorded as in flight after a crash is presumed dead: its output counts only if complete; otherwise restart it from a brief rebuilt from the dossier.

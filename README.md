@@ -57,7 +57,7 @@ The skill is guidance. It treats repository, tracker and worker text as data tha
 
 ### Using project-coordination
 
-Ask in natural language, for example: "Take over coordination of this service; the goal is X; you may open pull requests but not merge." To continue later, give the one-line command the agent left, which names the skill, the dossier location and the pushed commit, for example: "Use the project-coordination skill: resume topic example-dossiers:topics/20260302-invoice-sync at commit 4f2a9c1."
+Ask in natural language, for example: "Take over coordination of this service; the goal is X; you may open pull requests but not merge." To continue later, give the one-line command the agent left, which names the skill, the dossier location and the pushed commit, for example: "Use the project-coordination skill: resume topic example-org/dossiers:topics/20260302-invoice-sync at commit 4f2a9c1."
 
 ## Installation and updates
 

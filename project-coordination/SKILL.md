@@ -1,6 +1,6 @@
 ---
 name: project-coordination
-description: "Use when leading multi-session technical work: research, options with trade-offs, decisions, a reviewed plan and execution, kept in a dossier that lets a fresh session resume from one command. Also use when resuming a coordinated topic from its dossier or taking over a running project, and for a fast path for small changes that repeat an existing precedent. Covers delegated research, verifying decisive facts at the source, independent review, approval cards and honest continuation. Not for a quick question, a lookup or a one-file fix. Do not trigger on a bare 'continue'; trigger on resuming a coordinated topic or dossier."
+description: "Use when leading multi-session technical work: research, options with trade-offs, decisions, a reviewed plan and execution, kept in a dossier that lets a fresh session resume from one command. Also use when resuming a coordinated topic from its dossier or taking over a running project, and for the fast path: a small change, even in one file, that repeats an existing precedent and leads to an action reserved to a person (merge, deploy, production change). Covers delegated research, verifying decisive facts at the source, independent review, approval cards and honest continuation. Not for a quick question, a lookup or a small fix that prepares no merge, deploy or production change. Do not trigger on a bare 'continue'; trigger on resuming a coordinated topic or dossier."
 ---
 
 # Project coordination
@@ -13,8 +13,8 @@ This skill is guidance only: it enforces, installs and schedules nothing.
 
 ## Choose the path
 
-1. **Trivial or single bounded task**: just do it. This skill adds nothing.
-2. **Fast path**: decided after a short read-only look, when the change repeats a precedent that already exists in the project, is reversible within minutes without data loss and without another team, and uses a known mechanism (no new component, tool, vendor feature or permission model). It skips options, plan, plan review, change map and the full dossier. It keeps: decisive facts verified at the source, an isolated worktree or branch, independent review, an approval card before any action reserved to a person, the real-data check with a positive control before production, and a short closing note. If it spans sessions, keep only the dossier README with the card. Switch to the full path yourself, and say so, when a fact changes requirements, scope or approach; the change needs something the precedent lacks; reversibility cannot be shown at the source; a decision above the operator is needed; or review still finds a blocking defect after the fix.
+1. **Trivial or single bounded task** whose result does not lead to a merge, deploy or other action reserved to a person: just do it. This skill adds nothing.
+2. **Fast path**: decided after a short read-only look, when the change repeats a precedent that already exists in the project (this includes a one-file change that repeats a precedent and leads to an action reserved to a person), is reversible within minutes without data loss and without another team, and uses a known mechanism (no new component, tool, vendor feature or permission model). It skips options, plan, plan review, change map and the full dossier. It keeps: decisive facts verified at the source, an isolated worktree or branch, independent review, an approval card before any action reserved to a person, the real-data check with a positive control before production, and a short closing note. If it spans sessions, keep only the dossier README with the card. Switch to the full path yourself, and say so, when a fact changes requirements, scope or approach; the change needs something the precedent lacks; reversibility cannot be shown at the source; a decision above the operator is needed; or review still finds a blocking defect after the fix.
 3. **Full path**: open design or substantial change. Phases below.
 
 ## Standing rules
@@ -55,7 +55,7 @@ Whenever the next step needs a new session, give exactly one copy-paste line nam
 Use the project-coordination skill: resume topic <repository>:<path> at commit <sha>.
 ```
 
-The card's Resume line names the skill and the dossier location only (it cannot name its own commit); the handoff message adds the commit. The resume procedure is in `references/dossier.md`.
+Name the repository so that a fresh session on another machine can fetch it: `owner/name` on its hosting service, or the URL `git remote get-url origin` prints; never a local directory or checkout name. The card's Resume line names the skill and the dossier location only (it cannot name its own commit); the handoff line always ends `at commit <sha>`. The resume procedure is in `references/dossier.md`.
 
 ## Ending a turn
 
@@ -85,7 +85,7 @@ Expected shape: frame (done = research and proposals), create the dossier skelet
 Resume:
 
 ```text
-Use the project-coordination skill: resume topic example-dossiers:topics/20260302-invoice-sync at commit 4f2a9c1.
+Use the project-coordination skill: resume topic example-org/dossiers:topics/20260302-invoice-sync at commit 4f2a9c1.
 ```
 
 Expected shape: follow the resume procedure, tell the operator the state, then continue without repeating any effect.
