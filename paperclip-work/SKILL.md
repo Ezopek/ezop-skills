@@ -22,9 +22,9 @@ This skill is guidance. It installs, schedules and enforces nothing, and it gran
 Work tracked in two places drifts: one copy moves, the other goes stale, and nobody knows which is true.
 
 - **Check the map.** The environment's Paperclip entry says which kinds of work run in Paperclip and which stay with you: for example recurring operations, personal errands, and actions on a host the operator asks you to do. Check it before you start anything that is not a quick task.
-- **One record.** Coordinated work has exactly one record, its Paperclip task. Do not also track it on a task board of your own, in session notes or in a document. If you find coordinated work tracked elsewhere, either file it in Paperclip and close the other copy with a link, or ask the operator whether it is still wanted.
+- **One record.** Coordinated work has exactly one record, its Paperclip task. Do not also track it on a task board of your own, in session notes or in a document. If you find coordinated work tracked in a record of your own, either file it in Paperclip and close your copy with a link, or ask the operator whether it is still wanted. A shared ticket, such as a GitHub issue, stays open and is linked, as the next rule says.
 - **Findings become requests.** When a recurring job of yours finds something that needs work, such as a vulnerability that applies or a check that keeps failing, file a request. Do not start a side project.
-- **GitHub issues are linked, not synchronised.** A request that comes from a GitHub issue names it under Links, and its Done when says the pull request closes it (`Closes <owner>/<repo>#<n>`). Leave one comment on the GitHub issue with the task's link. Nothing else is synchronised: the issue stays the backlog entry, and the task holds the work.
+- **GitHub issues are linked, not synchronised.** A request that comes from a GitHub issue names it under Links. When the result is code, its Done when says the pull request closes the issue (`Closes <owner>/<repo>#<n>`). For a report or a plan, the operator closes the issue once the result is delivered. Leave one comment on the GitHub issue with the task's link. Nothing else is synchronised: the issue stays the backlog entry, and the task holds the work.
 
 ## Before the first call
 
@@ -97,7 +97,7 @@ Use `paperclip_create_task` with:
 
 ## Links
 - Repository: <URL>
-- GitHub issue: <owner>/<repo>#<n> (the pull request closes it)
+- GitHub issue: <owner>/<repo>#<n> (for code, the pull request closes it)
 - Earlier work: <task identifier>; records the agents cannot read are for people only: <URL>
 
 Filed by <assistant> for the operator on <date>.
