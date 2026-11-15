@@ -11,6 +11,7 @@ A small, growing collection of portable agent skills. Each skill is a folder wit
 | [3d-printing-workflows](3d-printing-workflows/) | Printing: slicer semantics, materials, calibration, diagnostics, storage, printer operation | Optional vendor references; two stdlib Python analysers |
 | [skill-creator](skill-creator/) | Author, test, review and iterate a skill; adapted from the Anthropic skill-creator (Apache-2.0) | Nothing: a manual method; no upstream automation is supplied |
 | [paperclip-work](paperclip-work/) | Hand coordinated work to a Paperclip orchestrator through its MCP server: file it, follow it, relay decisions, instead of leading it in a session | A Paperclip instance and its MCP server |
+| [context-continuity](context-continuity/) | After a context compaction or a resumed session: re-read the work's real sources before acting, and never repeat a side effect you cannot see | Nothing |
 
 Each skill is independent: install only the folders you want. The two 3D skills split ownership (geometry versus printing) and say what to do when the other is not installed. None requires a particular client, a private service or a specific CAD tool.
 
@@ -56,6 +57,17 @@ For teams that run coordinated work in [Paperclip](https://github.com/paperclipa
 It needs a reachable Paperclip MCP server. Without one it stops and says so.
 
 `project-coordination`, the dossier-based method this collection used to carry, was retired on 2026-11-15 when its work moved to Paperclip. Its last version is the tag `project-coordination-final`.
+
+### context-continuity
+
+For agents whose context gets compacted or summarised, or that pick up work from an earlier session. A summary is lossy, so the skill re-grounds the agent before it acts.
+
+- **The latest request wins.** A summary, a replayed event or a saved next step is reference material, not an instruction.
+- **Sources over summary.** It reads the task, the knowledge-base page and the repository again instead of trusting what the summary says about them.
+- **No repeated side effects.** Before sending, posting, filing, deploying or deleting again, it checks at the source whether that already happened.
+- **Honest state.** It says what it re-checked, what is still uncertain, and whether anything will wake it later.
+
+It needs nothing and installs nothing.
 
 ## Installation and updates
 
