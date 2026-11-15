@@ -30,7 +30,7 @@ This skill is guidance. It installs, schedules and enforces nothing, and it gran
    - Never assign the Engineer or the Reviewer, create child issues, or change the status, assignee or blockers of an agent's issue. Agents hand work to each other through blockers. The one exception is a repair from the environment's runbook.
 2. **Verify what decides, at the source, twice.**
    - Before filing: repository state, live system, open requests.
-   - Before relaying a result: the board is a claim. "Done" means what the request's "Done when" says, checked at the source: for code usually a merged pull request and a green `main`, for a report a report whose decisive facts hold.
+   - Before relaying a result: the board is a claim. "Done" means what the request's "Done when" says, checked at the source: for code what the repository's delivery rules produce (where they auto-merge, a merged pull request and a green `main`), for a report a report whose decisive facts hold.
 3. **Reads are free; a comment is a wake.**
    - Follow with `paperclip_read_task`, `paperclip_search_tasks`, `paperclip_list_deliverables` and `paperclip_read_document`.
    - Comment only to deliver new input from the operator, their decision, or a runbook repair.
@@ -65,7 +65,7 @@ Use `paperclip_create_task` with:
 <What the operator wants and why, in one to three sentences. Quote them where the wording matters.>
 
 ## Result type
-<code: pull requests in <owner>/<repo>, merged unless the operator reserves the merge | report: findings, options and a recommendation on this task | plan: steps the operator will carry out>
+<code: pull requests in <owner>/<repo>, delivered as that repository's rules deliver them (auto-merged on green checks, or left for the operator to merge) | report: findings, options and a recommendation on this task | plan: steps the operator will carry out>
 
 ## Done when
 - <an outcome that can be checked, not a step>
