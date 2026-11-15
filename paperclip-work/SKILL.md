@@ -1,6 +1,6 @@
 ---
 name: paperclip-work
-description: "Use when work needs coordination across sessions or agents and a Paperclip orchestrator is reachable through its MCP server: a code project or a multi-step change, research that ends in a decision, a plan for a host or infrastructure change, a multi-session project, or a project to onboard or migrate. Also use when asked to file, check, steer or follow up work in Paperclip, or to relay the operator's decision to it. Not for a question, a lookup or a small change you can finish and verify now, and not for agents that run inside Paperclip."
+description: "Use when work needs coordination across sessions or agents and your environment runs such work in a Paperclip orchestrator: a code project or a multi-step change, research that ends in a decision, a plan for a host or infrastructure change, a multi-session project, or a project to onboard or migrate. Also use when asked to file, check, steer or follow up work in Paperclip, or to relay the operator's decision to it. Not for a question, a lookup or a small change you can finish and verify now, and not for agents that run inside Paperclip."
 ---
 
 # Paperclip work
@@ -30,7 +30,7 @@ This skill is guidance. It installs, schedules and enforces nothing, and it gran
    - Never assign the Engineer or the Reviewer, create child issues, or change the status, assignee or blockers of an agent's issue. Agents hand work to each other through blockers. The one exception is a repair from the environment's runbook.
 2. **Verify what decides, at the source, twice.**
    - Before filing: repository state, live system, open requests.
-   - Before relaying a result: the board is a claim. "Done" means the pull request is merged and `main` is green, or the report exists and its decisive facts hold.
+   - Before relaying a result: the board is a claim. "Done" means what the request's "Done when" says, checked at the source: for code usually a merged pull request and a green `main`, for a report a report whose decisive facts hold.
 3. **Reads are free; a comment is a wake.**
    - Follow with `paperclip_read_task`, `paperclip_search_tasks`, `paperclip_list_deliverables` and `paperclip_read_document`.
    - Comment only to deliver new input from the operator, their decision, or a runbook repair.
@@ -38,7 +38,7 @@ This skill is guidance. It installs, schedules and enforces nothing, and it gran
 4. **Never comment on a finished issue.** A comment from the operator's connection reopens a done or cancelled issue and wakes its assignee. Follow-up on finished work is a new request that links the old one.
 5. **Relay decisions; do not make them.**
    - Post the operator's answer in their words, once, on the issue where the question was asked.
-   - Product and scope questions go to the operator with the Coordinator's options and your recommendation. Technical questions belong to the Coordinator and are not passed up.
+   - Product and scope questions go to the operator with the Coordinator's options and your recommendation. Technical questions belong to the Coordinator and are not passed up, unless the request reserves them to the operator.
    - Approvals are decided in Paperclip's UI, not through MCP: give the operator the link.
 6. **Be honest about continuation.**
    - Nothing wakes you when a request finishes. Say so, for example: "Filed as EZO-12. I am not notified; ask me, or watch the notification channel."
@@ -65,7 +65,7 @@ Use `paperclip_create_task` with:
 <What the operator wants and why, in one to three sentences. Quote them where the wording matters.>
 
 ## Result type
-<code: merged pull requests in <owner>/<repo> | report: findings, options and a recommendation on this task | plan: steps the operator will carry out>
+<code: pull requests in <owner>/<repo>, merged unless the operator reserves the merge | report: findings, options and a recommendation on this task | plan: steps the operator will carry out>
 
 ## Done when
 - <an outcome that can be checked, not a step>
