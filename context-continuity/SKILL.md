@@ -30,8 +30,8 @@ Reply in the user's language.
 ## Keeping long work recoverable
 
 - Keep state where the work already lives (the task, the repository, the knowledge-base page), so a later reader finds it without your context. Do not start a private board or notes that become a second record.
-- At a natural boundary in long work (a decision, a finished stage), make sure the decision and the next step are recorded there before you move on.
-- When the user asks for a handoff or resume note, write it first in that turn, before other work.
+- At a natural boundary in long work (a decision, a finished stage), make sure the decision and the next step are recorded there before you move on, following that record's own rules (for example, where a comment wakes other agents, record only what they need, and change a shared record only with the consent it requires).
+- When the user asks for a handoff or resume note, write it before other work in that turn, from the sources you re-read, not from the summary.
 
 ## Not this skill
 
