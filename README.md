@@ -47,6 +47,7 @@ A method for writing a skill, proving it changes behaviour, and revising in prop
 For teams that run coordinated work in [Paperclip](https://github.com/paperclipai/paperclip). Your assistant files a request to the Paperclip Coordinator, follows it by reading the board, relays your decisions and checks results at the source, instead of leading the work itself.
 
 - **File it or do it.** Small things are simply done. Work that needs several sessions, agents or decisions becomes one request per outcome, written from a template: goal, result type, done when, constraints, authority, state, links.
+- **One place for each kind of work.** Coordinated work has one record, its Paperclip task, and is never tracked on a side board as well. GitHub issues are linked to the task, not synchronised with it.
 - **Reads are free, comments wake agents.** It follows work by reading and comments only to deliver your input. It never comments on finished work, which would reopen it.
 - **Decisions stay yours.** It relays your answers in your words, and gives you a short card for anything you do yourself: a deploy, an apply, a command on a host.
 - **Honest continuation.** Nothing wakes the assistant when a request finishes. It says so, and reads the task again before it speaks about it.
