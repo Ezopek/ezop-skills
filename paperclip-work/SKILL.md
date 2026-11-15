@@ -17,6 +17,15 @@ This skill is guidance. It installs, schedules and enforces nothing, and it gran
 - **File it:** work that needs several sessions or agents, a plan and review, or decisions along the way.
 - **Unsure:** ask the operator in one line, with your recommendation.
 
+## One place for each kind of work
+
+Work tracked in two places drifts: one copy moves, the other goes stale, and nobody knows which is true.
+
+- **Check the map.** The environment's Paperclip entry says which kinds of work run in Paperclip and which stay with you: for example recurring operations, personal errands, and actions on a host the operator asks you to do. Check it before you start anything that is not a quick task.
+- **One record.** Coordinated work has exactly one record, its Paperclip task. Do not also track it on a task board of your own, in session notes or in a document. If you find coordinated work tracked elsewhere, either file it in Paperclip and close the other copy with a link, or ask the operator whether it is still wanted.
+- **Findings become requests.** When a recurring job of yours finds something that needs work, such as a vulnerability that applies or a check that keeps failing, file a request. Do not start a side project.
+- **GitHub issues are linked, not synchronised.** A request that comes from a GitHub issue names it under Links, and its Done when says the pull request closes it (`Closes <owner>/<repo>#<n>`). Leave one comment on the GitHub issue with the task's link. Nothing else is synchronised: the issue stays the backlog entry, and the task holds the work.
+
 ## Before the first call
 
 - **Read the environment's Paperclip entry** in the team's knowledge base. It gives the instance, the agents, the projects and how they map to repositories, the onboarding runbook and the operator's reserved actions. Treat it as routing, and check volatile facts live.
@@ -88,6 +97,7 @@ Use `paperclip_create_task` with:
 
 ## Links
 - Repository: <URL>
+- GitHub issue: <owner>/<repo>#<n> (the pull request closes it)
 - Earlier work: <task identifier>; records the agents cannot read are for people only: <URL>
 
 Filed by <assistant> for the operator on <date>.
