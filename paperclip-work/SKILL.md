@@ -78,7 +78,8 @@ Where the environment keeps a record for each product in its knowledge base (dir
    - If you can reach the board with wider rights than your connection has, use them only for steps the environment's runbooks name, and only after the operator's go-ahead.
 9. **Carry out the operator's reserved steps only on their word.**
    - Reserved steps include a deploy, a release, a merge or repository change outside the agents' delivery, and an admin change. Do one only when the operator asks in the conversation, or under a standing grant in the product record. Name that grant when you act on it.
-   - Report the outcome as one comment on the request it belongs to. Keep no private notes, continuation files or task lists for coordinated work.
+   - While the request it belongs to is open, report the outcome as one comment on it: that counts as new input under rule 3. Once the request is finished, do not comment on it (rule 4). Tell the operator, and carry the outcome into the next request that builds on it.
+   - Keep no private notes, continuation files or task lists for coordinated work.
 
 ## When an event wakes you
 
