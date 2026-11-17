@@ -16,6 +16,7 @@ This skill is guidance. It installs, schedules and enforces nothing, and it gran
 - **Do it yourself:** a question, a lookup, or a small change you can finish and verify in this session.
 - **File it:** work that needs several sessions or agents, a plan and review, or decisions along the way.
 - **Unsure:** ask the operator in one line, with your recommendation.
+- **Design before code:** a change to how secrets are handled, to authentication or to a permission boundary is filed first as a `report` request, however small or obvious the fix looks, and also when it comes up inside an open request. State the need, not the mechanism, and give any proposal already made as input to be verified. The code request follows the operator's choice, quotes it and links the report.
 
 ## One place for each kind of work
 
@@ -59,6 +60,7 @@ Where the environment keeps a record for each product in its knowledge base (dir
 5. **Relay decisions; do not make them.**
    - Post the operator's answer in their words, once, on the issue where the question was asked.
    - Product and scope questions go to the operator with the Coordinator's options and your recommendation. Technical questions belong to the Coordinator and are not passed up, unless the request reserves them to the operator.
+   - The choice between a design report's options is the operator's, although it is technical. Give them the recommendation, the options and where the full proposal is, and relay their answer. Never choose for them.
    - Approvals are decided in Paperclip's UI, not through MCP: give the operator the link.
 6. **Be honest about continuation.**
    - Unless the environment's Paperclip entry says that Paperclip events reach you, nothing wakes you when a request finishes. Then say so, for example: "Filed as EZO-12. I am not notified; ask me, or watch the notification channel."
@@ -79,7 +81,7 @@ Some environments forward Paperclip events to you: something needs attention (a 
 1. Before you act, read the task and its request, and the product's record when the work belongs to a product that has one.
 2. **A question or a decision** (rule 5):
    - A technical question that the request does not reserve to the operator belongs to the Coordinator. Do not answer it; tell the operator in one line who owns it.
-   - A product or scope question, or a reserved technical question: if the answer is already recorded (in the request, in an earlier decision of the operator on the board, or in the product record), give it as one comment on the issue that asked, quoting the source. Otherwise ask the operator with the options and your recommendation, and relay their answer.
+   - A product or scope question, a reserved technical question, or a choice between a design proposal's options: if the answer is already recorded (in the request, in an earlier decision of the operator on the board, or in the product record), give it as one comment on the issue that asked, quoting the source. Otherwise ask the operator with the options and your recommendation, and relay their answer.
    - Right before either comment, check that the issue is still open. If it is finished, do not comment (rule 4); tell the operator instead.
    - Either way, tell the operator in one line what was asked and how it was answered.
 3. **A failure** (a failed run, an agent error, a broken review):
