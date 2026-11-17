@@ -16,7 +16,7 @@ This skill is guidance. It installs, schedules and enforces nothing, and it gran
 - **Do it yourself:** a question, a lookup, or a small change you can finish and verify in this session.
 - **File it:** work that needs several sessions or agents, a plan and review, or decisions along the way.
 - **Unsure:** ask the operator in one line, with your recommendation.
-- **Design before code:** a change to how secrets are handled, to authentication or to a permission boundary is filed first as a `report` request, however small or obvious the fix looks, and also when it comes up inside an open request. State the need, not the mechanism, and give any proposal already made as input to be verified. The code request follows the operator's choice, quotes it and links the report.
+- **Design before code:** work you file to Paperclip that changes how secrets are handled, authentication or a permission boundary goes in first as a `report` request, even when the fix looks obvious, and so does such a change that comes up inside an open request. State the need, not the mechanism, and give any proposal already made as input to be verified. The code request follows the operator's choice, quotes it and links the report.
 
 ## One place for each kind of work
 
