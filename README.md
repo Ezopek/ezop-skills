@@ -51,6 +51,7 @@ For teams that run coordinated work in [Paperclip](https://github.com/paperclipa
 - **One place for each kind of work.** Coordinated work has one record, its Paperclip task, and is never tracked on a side board as well. GitHub issues are linked to the task, not synchronised with it.
 - **Reads are free, comments wake agents.** It follows work by reading and comments only to deliver your input. It never comments on finished work, which would reopen it.
 - **Decisions stay yours.** It relays your answers in your words, and gives you a short card for anything you do yourself: a deploy, an apply, a command on a host.
+- **Reserved steps stay yours.** It carries out a deploy, a release or an admin change only when you ask, or under a standing grant recorded for the product. It hands any change to the orchestrator itself to the orchestrator's maintainer.
 - **Honest continuation.** Nothing wakes the assistant when a request finishes. It says so, and reads the task again before it speaks about it.
 - **Environment facts live elsewhere.** The instance, the agents, the project map and the onboarding runbook come from your team's knowledge base. The skill only points there.
 
