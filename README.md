@@ -12,6 +12,7 @@ A small, growing collection of portable agent skills. Each skill is a folder wit
 | [skill-creator](skill-creator/) | Author, test, review and iterate a skill; adapted from the Anthropic skill-creator (Apache-2.0) | Nothing: a manual method; no upstream automation is supplied |
 | [paperclip-work](paperclip-work/) | Hand coordinated work to a Paperclip orchestrator through its MCP server: file it, follow it, relay decisions, instead of leading it in a session | A Paperclip instance and its MCP server |
 | [context-continuity](context-continuity/) | After a context compaction or a resumed session: re-read the work's real sources before acting, and never repeat a side effect you cannot see | Nothing |
+| [security-audit](security-audit/) | Full security audit of a codebase with independently verified findings; vendored from Cloudflare (MIT) | A client with parallel subagents; Node.js for its two validators |
 
 Each skill is independent: install only the folders you want. The two 3D skills split ownership (geometry versus printing) and say what to do when the other is not installed. None requires a particular client, a private service or a specific CAD tool.
 
@@ -69,6 +70,20 @@ For agents whose context gets compacted or summarised, or that pick up work from
 - **Honest state.** It says what it re-checked, what is still uncertain, and whether anything will wake it later.
 
 It needs nothing and installs nothing.
+
+### security-audit
+
+Cloudflare's `security-audit` skill, vendored at a pinned commit (see its `UPSTREAM.md`). It audits a whole codebase:
+
+- reconnaissance of architecture and trust boundaries;
+- hunting led by a coverage ledger;
+- a fresh verifier that tries to disprove each candidate;
+- schema-checked findings, sorted into `confirmed`, `needs_validation` and `rejected`;
+- a report.
+
+It runs code of the audited target only inside an OS-enforced sandbox and otherwise leaves such leads as `needs_validation`. Its artifacts go to a directory outside the target by default.
+
+The one local change is a narrower description, so the skill is used for an explicit audit request or when named, not for every security question. It looks for committed secrets, history and vulnerable dependencies by reading, with no dedicated scanner, so run one such as `gitleaks` as well when those matter. A single run finds only part of what repeated runs find.
 
 ## Installation and updates
 

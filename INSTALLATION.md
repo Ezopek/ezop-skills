@@ -16,6 +16,7 @@ The unit to install is a single skill folder (each contains `SKILL.md`). Copy on
 - `skill-creator/` (authoring method; works alone)
 - `paperclip-work/` (handing coordinated work to Paperclip; needs its MCP server)
 - `context-continuity/` (acting safely after a context compaction or a resumed session)
+- `security-audit/` (full security audit of a codebase; vendored from Cloudflare)
 
 The two 3D skills point at each other for the other half of the work, but each states what to do when its sibling is absent, so installing one is fine. Copy a whole folder including its `references/`, `scripts/`, `templates/` and `assets/`: the entry file links to them, and a partial copy leaves broken links. Do not install the repository's `scripts/` or `tests/` directories as skills; they are maintainer tooling for this source tree.
 
@@ -43,6 +44,7 @@ Notes by skill:
 - **skill-creator** is a manual method with no scripts: nothing in its folder needs Python or a particular client. Only the upstream Apache-2.0 license text is included with attribution (`skill-creator/UPSTREAM.md`). The upstream Claude-specific automation is not supplied and not qualified by this release; do not expect the folder to contain it, and obtain or run upstream code only as a separate decision of your own, after your own review.
 - **paperclip-work** is guidance only and has no scripts. It needs a Paperclip instance whose MCP server the client can reach, and it takes environment specifics (instance, agents, project map, onboarding runbook) from your team's knowledge base.
 - **context-continuity** is guidance only and has no scripts or dependencies.
+- **security-audit** needs a client that runs parallel subagents, and Node.js for its two validators. The validators only read the file they are given. The upstream MIT license text and the pinned source commit are in `security-audit/UPSTREAM.md`. The skill executes the audited target's code only inside an OS-enforced sandbox. Without one, those leads stay `needs_validation`.
 - Client-specific features such as invoking a skill by name, automatic activation, or which frontmatter fields are honoured differ by client and version; check the client's documentation.
 
 ## Update and sync

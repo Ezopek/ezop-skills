@@ -11,7 +11,9 @@ Checks per top-level folder that contains SKILL.md:
 * frontmatter: a small YAML subset (name, description, optional license,
   compatibility, allowed-tools, string-valued one-level metadata), name rules;
 * links and file references resolve inside the package (markdown links,
-  `references/...`-style paths, bare `*.md` names), no cross-package paths;
+  `references/...`-style paths, bare `*.md` names, and bare `*.json` / `*.cjs` names
+  that exist in the package; a backticked non-`.md` name that does not exist is an
+  output and is not reported), no cross-package paths;
 * dependency closure: every shipped file is reachable from SKILL.md;
 * public-data boundary: generic checks for private home paths, private network
   addresses (IPv4 private ranges, and IPv6 unique-local addresses, i.e. prefix
@@ -65,9 +67,10 @@ from pathlib import Path
 ALLOWED_KEYS = {"name", "description", "license", "compatibility", "metadata", "allowed-tools"}
 NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 SKIP_DIRS = {".git"}
-ORPHAN_OK = {"LICENSE.txt"}  # a retained licence text is shipped, not linked
+ORPHAN_OK = {"LICENSE.txt", "UPSTREAM.md"}  # a retained licence text and a provenance note are shipped, not linked
 # Names of files that references describe as outputs of a procedure, not shipped files.
-OUTPUT_NAMES = {"report.md", "print-feedback.md", "notes.md", "REPORT.md", "PROGRESS.md", "README.md"}
+OUTPUT_NAMES = {"report.md", "print-feedback.md", "notes.md", "REPORT.md", "PROGRESS.md", "README.md",
+                "architecture.md", "FINDINGS-DETAIL.md", "NEEDS-VALIDATION.md"}
 
 class _PrivateIPv6:
     """Finds IPv6 unique-local and link-local addresses; same search() contract as a compiled regex.
@@ -154,6 +157,8 @@ LINK_RE = re.compile(r"\[[^\]]*\]\(([^)\s]+)\)")
 EXTERNAL_RE = re.compile(r"(?:[a-z][a-z0-9+.-]*:|//)", re.I)
 PREFIXED_RE = re.compile(r"(?<![\w/.<-])((?:\.\./|\./)*(?:references|scripts|templates|assets|agents|eval-viewer)/[A-Za-z0-9_./-]+\.(?:md|py|json|html|txt))")
 BARE_MD_RE = re.compile(r"`([A-Za-z0-9_-]+\.md)`")
+# Other backticked bare file names count as references only when the file exists in the package (else it is an output).
+BARE_EXT_RE = re.compile(r"`([A-Za-z0-9_-]+\.(?:json|cjs))`")
 
 
 def parse_frontmatter(text: str):
@@ -303,6 +308,9 @@ def _refs(text: str, file_dir: Path, pkg: Path):
         yield m.group(1), "path"
     for m in BARE_MD_RE.finditer(text):
         if m.group(1) not in OUTPUT_NAMES:
+            yield m.group(1), "bare"
+    for m in BARE_EXT_RE.finditer(text):
+        if (pkg / m.group(1)).is_file() or (file_dir / m.group(1)).is_file():
             yield m.group(1), "bare"
 
 
