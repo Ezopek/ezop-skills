@@ -81,9 +81,9 @@ Cloudflare's `security-audit` skill, vendored at a pinned commit (see its `UPSTR
 - schema-checked findings, sorted into `confirmed`, `needs_validation` and `rejected`;
 - a report.
 
-It runs code of the audited target only inside an OS-enforced sandbox and otherwise leaves such leads as `needs_validation`. Its artifacts go to a directory outside the target.
+It runs code of the audited target only inside an OS-enforced sandbox and otherwise leaves such leads as `needs_validation`. Its artifacts go to a directory outside the target by default.
 
-The one local change is a narrower description, so the skill is used for an explicit audit request or when named, not for every security question. It does not scan dependencies, secrets or git history. A single run finds only part of what repeated runs find.
+The one local change is a narrower description, so the skill is used for an explicit audit request or when named, not for every security question. It looks for committed secrets, history and vulnerable dependencies by reading, with no dedicated scanner, so run one such as `gitleaks` as well when those matter. A single run finds only part of what repeated runs find.
 
 ## Installation and updates
 
