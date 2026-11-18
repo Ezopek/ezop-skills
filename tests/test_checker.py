@@ -565,6 +565,20 @@ class CheckerSyntheticTest(TmpCase):
             make_repo(d, readme="demo-skill [broken](nope.md)\n")
             self.assertIn("BROKEN_LINK", codes(check_skills.check(d)))
 
+    def test_backticked_existing_json_cjs_is_reachable_and_missing_is_ignored(self):
+        with tempfile.TemporaryDirectory(dir=self.tmp) as d:
+            make_repo(d, skill=GOOD_SKILL + "\nValidate with `schema.json` and `check.cjs`; writes `out.json`.\n")
+            pkg = Path(d) / "demo-skill"
+            (pkg / "schema.json").write_text("{}\n")
+            (pkg / "check.cjs").write_text("// check\n")
+            self.assertEqual(set(), codes(check_skills.check(d)))
+
+    def test_unlinked_upstream_note_is_not_orphan(self):
+        with tempfile.TemporaryDirectory(dir=self.tmp) as d:
+            make_repo(d)
+            (Path(d) / "demo-skill" / "UPSTREAM.md").write_text("# provenance\n")
+            self.assertNotIn("ORPHAN", codes(check_skills.check(d)))
+
     def test_orphan_artifact_syntax_and_cross_package(self):
         with tempfile.TemporaryDirectory(dir=self.tmp) as d:
             make_repo(d)
@@ -778,7 +792,7 @@ class CheckerSyntheticTest(TmpCase):
 
 
 class CheckerOnRealTreeTest(TmpCase):
-    PACKAGES = ["scope-discipline", "cad-modeling-and-reverse-engineering", "3d-printing-workflows", "skill-creator", "paperclip-work", "context-continuity"]
+    PACKAGES = ["scope-discipline", "cad-modeling-and-reverse-engineering", "3d-printing-workflows", "skill-creator", "paperclip-work", "context-continuity", "security-audit"]
 
     def test_real_tree_is_clean(self):
         self.assertEqual(check_skills.check(ROOT), [])
