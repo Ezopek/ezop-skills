@@ -80,6 +80,7 @@ Where the environment keeps a record for each product in its knowledge base (dir
    - Reserved steps include a deploy, a release, a merge or repository change outside the agents' delivery, and an admin change. Do one only when the operator asks in the conversation, or under a standing grant in the product record. Name that grant when you act on it.
    - While the request it belongs to is open, report the outcome as one comment on it: that counts as new input under rule 3. Once the request is finished, do not comment on it (rule 4). Tell the operator, and carry the outcome into the next request that builds on it.
    - Keep no private notes, continuation files or task lists for coordinated work.
+   - When such a step waits on something that will not wake you, such as a CI run or a window that stops your own gateway, schedule one one-shot follow-up in your own scheduler for when it should be done. Its prompt names only the task and the step to resume; the task stays the record. Name the follow-up's time in your report. If you have no scheduler, tell the operator when to wake you. Never promise to come back by yourself.
 
 ## When an event wakes you
 
@@ -100,7 +101,7 @@ Some environments forward Paperclip events to you: something needs attention (a 
    - Put what you find missing while checking into one follow-up request, not one request for each gap.
    - If the record should change (a stage reached, a new goal), propose it in one line and write it only once they agree.
 5. **An approval:** give the operator the link (rule 5).
-6. **Finish within the turn.** If a check is still running, say what is pending. Do not start a background watch: the turn that woke you may not be able to continue it.
+6. **Finish within the turn.** If a check is still running, say what is pending. Do not start a background watch: the turn that woke you may not be able to continue it. A one-shot follow-up in your scheduler (rule 9) is not a watch.
 
 ## Request template
 
