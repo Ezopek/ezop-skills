@@ -107,7 +107,7 @@ Some environments forward Paperclip events to you: something needs attention (a 
 
 Use `paperclip_create_task` with:
 - `assigneeAgentId`: the Coordinator, from `paperclip_list_agents`;
-- `projectId`: from `paperclip_list_projects`, following the environment's project map: for work on a product, code or not, the project of the product's main repository; omit it for work that belongs to no product;
+- `projectId`: always, from `paperclip_list_projects`, following the environment's project map: for work on a product, code or not, the project of the product's main repository; for work that belongs to no product, the project the map names for such work. Events about a request are routed by its project, so a request without one reaches nobody who follows it up. If no project fits, ask the operator; never file without one;
 - `requestId`: a new UUID; retry an uncertain call with the same UUID and the same arguments;
 - `title`: `<product or project>: <outcome>`, unique.
 
@@ -154,6 +154,7 @@ Leave out delivery steps; the agents know them. Every "done when" item must be s
 ## Onboarding or migrating a project
 
 Follow the onboarding runbook named in the environment's Paperclip entry. If there is none, stop and say so.
+- Create a project only once its events have somewhere to go. Where the environment forwards events per project, the route to the project's channel comes first; until it exists, the project's events reach nobody who follows them up.
 - A repository's bootstrap is its gate workflow alone. If it needs more, or its first run fails, stop and file the bootstrap as a request to the Coordinator.
 - Some operations do not fit the agents' delivery: moving an upstream mirror, merging an upstream release, cutting a release, an admin change. Each one becomes a procedure written in that repository. The operator or a delegate they name carries it out, and the agents prepare its inputs. Never ask for a repository-specific mode in the agents' instructions.
 
