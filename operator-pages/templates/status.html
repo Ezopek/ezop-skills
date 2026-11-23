@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Status prac</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f6f6f3; --surface: #ffffff; --text: #1d1d1b; --muted: #5a5a55; --line: #dcdcd5;
+  --accent: #2457c5; --accent-bg: #e8effc;
+  --ok: #14702d; --ok-bg: #e4f4e8; --warn: #8a5a00; --warn-bg: #fcf0d6; --bad: #b3261e; --bad-bg: #fbe7e5;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #141416; --surface: #1c1c20; --text: #ececea; --muted: #a3a39d; --line: #34343a;
+    --accent: #8db3ff; --accent-bg: #1d2a45;
+    --ok: #5fd37a; --ok-bg: #16301d; --warn: #f0c15a; --warn-bg: #3a2d10; --bad: #ff8a80; --bad-bg: #3d1c1a;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #141416; --surface: #1c1c20; --text: #ececea; --muted: #a3a39d; --line: #34343a;
+  --accent: #8db3ff; --accent-bg: #1d2a45;
+  --ok: #5fd37a; --ok-bg: #16301d; --warn: #f0c15a; --warn-bg: #3a2d10; --bad: #ff8a80; --bad-bg: #3d1c1a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 900px; margin: 0 auto; padding: 16px 16px 48px; }
+h1 { font-size: 1.5rem; line-height: 1.25; margin: 0 0 4px; }
+h2 { font-size: 1.1rem; margin: 28px 0 8px; }
+p { margin: 0 0 8px; }
+h1, h2, p, td, th, summary, .chip { overflow-wrap: anywhere; }
+a { color: var(--accent); }
+.muted { color: var(--muted); }
+.card, details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; margin: 0 0 12px; min-width: 0; }
+.card.wait { border-left: 4px solid var(--warn); }
+.card p { margin: 4px 0 0; }
+.chip { display: inline-block; border: 1px solid currentColor; border-radius: 999px; padding: 1px 10px; font-size: .85rem; font-weight: 600; }
+.ok { color: var(--ok); background: var(--ok-bg); }
+.warn { color: var(--warn); background: var(--warn-bg); }
+.bad { color: var(--bad); background: var(--bad-bg); }
+.acc { color: var(--accent); background: var(--accent-bg); }
+table { width: 100%; border-collapse: collapse; background: var(--surface); }
+th, td { text-align: left; vertical-align: top; padding: 8px; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-size: .85rem; }
+details { padding: 10px 14px; }
+details table { margin-top: 8px; }
+summary { cursor: pointer; font-weight: 600; }
+summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 600px) {
+  thead { display: none; }
+  table, tbody, tr, td { display: block; }
+  tr { padding: 8px; border-bottom: 1px solid var(--line); }
+  td { border: 0; padding: 2px 0; }
+  td::before { content: attr(data-label); display: block; color: var(--muted); font-size: .8rem; }
+}
+</style>
+</head>
+<body>
+<main id="app"><noscript>Ta strona wymaga JavaScriptu.</noscript></main>
+<script type="application/json" id="data">{"template":"REPLACE_ME"}</script>
+<script>
+(() => {
+  const app = document.getElementById("app");
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = String(text); return e; };
+  const put = (parent, ...kids) => { kids.forEach(k => { if (k) parent.appendChild(k); }); return parent; };
+  const list = x => (Array.isArray(x) ? x : []);
+  const str = x => (x == null ? "" : String(x));
+  const fail = msg => { app.textContent = ""; app.appendChild(el("p", "card bad", msg)); };
+  const anchor = (label, url) => {
+    if (typeof url !== "string" || !/^https:\/\//i.test(url)) return null;
+    const a = el("a", null, label); a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer"; return a;
+  };
+  const section = title => { const s = el("section"); s.appendChild(el("h2", null, title)); app.appendChild(s); return s; };
+  const chip = (cls, icon, word) => {
+    const c = el("span", "chip " + cls), i = el("span", null, icon + " ");
+    i.setAttribute("aria-hidden", "true");
+    return put(c, i, el("span", null, word));
+  };
+  const STATE = { done: ["ok", "✓", "Gotowe"], doing: ["acc", "…", "W toku"], blocked: ["bad", "✕", "Zablokowane"], waiting: ["warn", "!", "Czeka na Ciebie"] };
+  const state = it => STATE[it.state] || ["", "?", str(it.state) || "brak danych"];
+  const name = it => { const td = el("td"); td.setAttribute("data-label", "Pozycja"); return put(td, anchor(str(it.name), it.url) || el("span", null, it.name)); };
+  const cell = (label, text) => { const td = el("td", null, text); td.setAttribute("data-label", label); return td; };
+  const table = items => {
+    const hr = el("tr"), tb = el("tbody");
+    ["Pozycja", "Stan", "Następny krok", "Kto", "Ostatnia zmiana"].forEach(h => hr.appendChild(el("th", null, h)));
+    items.forEach(it => {
+      const st = state(it), td = el("td");
+      td.setAttribute("data-label", "Stan");
+      put(tb, put(el("tr"), name(it), put(td, chip(st[0], st[1], st[2])), cell("Następny krok", it.next), cell("Kto", it.who), cell("Ostatnia zmiana", it.changed)));
+    });
+    return put(el("table"), put(el("thead"), hr), tb);
+  };
+
+  let data;
+  try { data = JSON.parse(document.getElementById("data").textContent); }
+  catch (e) { return fail("Błędne dane JSON: " + e.message); }
+  if (!data || typeof data !== "object" || data.template === "REPLACE_ME") return fail("Szablon bez danych: podmień blok JSON.");
+  app.textContent = "";
+
+  const items = list(data.items).filter(it => it && typeof it === "object");
+  const open = items.filter(it => it.state !== "done"), closed = items.filter(it => it.state === "done");
+  const waiting = open.filter(it => it.state === "waiting");
+
+  put(app, put(el("header"), el("h1", null, data.title || "Status prac"), el("p", "muted", "Ostatnia aktualizacja: " + (str(data.updated) || "brak daty"))));
+
+  const w = section("Czeka na Ciebie");
+  if (!waiting.length) w.appendChild(el("p", "muted", "Nic na Ciebie nie czeka."));
+  waiting.slice(0, 3).forEach(it => w.appendChild(put(el("div", "card wait"), put(el("strong"), anchor(str(it.name), it.url) || el("span", null, it.name)), el("p", null, it.next))));
+  if (waiting.length > 3) w.appendChild(el("p", "muted", "Jeszcze " + (waiting.length - 3) + " w tabeli poniżej."));
+
+  const t = section("Pozycje w toku");
+  if (open.length) t.appendChild(table(open)); else t.appendChild(el("p", "muted", "Brak otwartych pozycji."));
+
+  if (closed.length) put(app, put(el("details"), el("summary", null, "Zakończone (" + closed.length + ")"), table(closed)));
+})();
+</script>
+</body>
+</html>

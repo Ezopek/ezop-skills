@@ -13,6 +13,7 @@ A small, growing collection of portable agent skills. Each skill is a folder wit
 | [paperclip-work](paperclip-work/) | Hand coordinated work to a Paperclip orchestrator through its MCP server: file it, follow it, relay decisions, instead of leading it in a session | A Paperclip instance and its MCP server |
 | [context-continuity](context-continuity/) | After a context compaction or a resumed session: re-read the work's real sources before acting, and never repeat a side effect you cannot see | Nothing |
 | [security-audit](security-audit/) | Full security audit of a codebase with independently verified findings; vendored from Cloudflare (MIT) | A client with parallel subagents; Node.js for its two validators |
+| [operator-pages](operator-pages/) | A decision page or a status page for the operator, published as a private Artifact from a fixed HTML template where only the data changes | A client with the `Artifact` tool (Claude Code) |
 
 Each skill is independent: install only the folders you want. The two 3D skills split ownership (geometry versus printing) and say what to do when the other is not installed. None requires a particular client, a private service or a specific CAD tool.
 
@@ -84,6 +85,18 @@ Cloudflare's `security-audit` skill, vendored at a pinned commit (see its `UPSTR
 It runs code of the audited target only inside an OS-enforced sandbox and otherwise leaves such leads as `needs_validation`. Its artifacts go to a directory outside the target by default.
 
 The one local change is a narrower description, so the skill is used for an explicit audit request or when named, not for every security question. It looks for committed secrets, history and vulnerable dependencies by reading, with no dedicated scanner, so run one such as `gitleaks` as well when those matter. A single run finds only part of what repeated runs find.
+
+### operator-pages
+
+For an assistant that gives one operator bigger decisions and long status lists. A wall of chat text is slow to read, and a page built from scratch is slow and costly to write, so the skill ships two fixed templates and tells the assistant to change only their data.
+
+- **Chat first.** A decision page is for three or more real options, three or more related decisions or a hard-to-reverse effect; a status page is for five or more items tracked over more than a day. Otherwise the assistant answers in chat.
+- **Two self-contained templates.** `decision.html` and `status.html` hold their data in one JSON block that the page's own script draws. They follow the Artifact page contract (light and dark theme, phone width, no external scripts) and insert all data as text, with links only when they start with `https://`.
+- **Cheap by design.** The assistant copies a template, replaces the JSON and publishes. A page built from a template costs a few thousand output tokens; one built from scratch costs several times that, so a one-off is never built from scratch and falls back to Markdown.
+- **The choice returns in chat.** The decision page shows a ready sentence with a "Kopiuj" button. It has no database and sends nothing back.
+- **Honest labels.** Every option and decision has a short name instead of a bare code, and reversibility is always a word plus a colour.
+
+The template wording is Polish. It needs the `Artifact` tool to publish; without it the skill falls back to chat. Chat-reply length and structure are not part of it.
 
 ## Installation and updates
 

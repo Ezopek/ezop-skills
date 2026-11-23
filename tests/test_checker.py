@@ -792,7 +792,7 @@ class CheckerSyntheticTest(TmpCase):
 
 
 class CheckerOnRealTreeTest(TmpCase):
-    PACKAGES = ["scope-discipline", "cad-modeling-and-reverse-engineering", "3d-printing-workflows", "skill-creator", "paperclip-work", "context-continuity", "security-audit"]
+    PACKAGES = ["scope-discipline", "cad-modeling-and-reverse-engineering", "3d-printing-workflows", "skill-creator", "paperclip-work", "context-continuity", "security-audit", "operator-pages"]
 
     def test_real_tree_is_clean(self):
         self.assertEqual(check_skills.check(ROOT), [])
