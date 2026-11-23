@@ -45,8 +45,8 @@
     {
       "name": "Wybór opcji",
       "question": "Którą opcję wybierasz?",
-      "choices": ["tylko dysk", "dysk i chmura", "tylko chmura"],
-      "advice": "dysk i chmura",
+      "choices": ["Tylko drugi dysk", "Dysk plus chmura", "Tylko chmura"],
+      "advice": "Dysk plus chmura",
       "otherwise": "Plan zmienia się tylko w części o chmurze."
     },
     {

@@ -46,7 +46,7 @@ They hold on the page, in the report it summarises and in chat.
 
 The fields to write in step 2 are listed under each page below. `templates/decision.example.json` and `templates/status.example.json` are complete examples of the data; read one when unsure of a shape.
 
-JSON rules: valid JSON; every value plain text, with no HTML and no Markdown; write `<` as `<` so a value can never close the script block; a link works only when it starts with `https://`. The page inserts all data as text, so nothing in it is ever run. Put no secret, key, token or private message in a page. Write the data yourself in your own words, short, and link to the full document instead of pasting it.
+JSON rules: valid JSON; every value plain text, with no HTML and no Markdown; write every `<` as `\u003c` so a value can never close the script block; a link works only when it starts with `https://`. The page inserts all data as text, so nothing in it is ever run. Put no secret, key, token or private message in a page. Write the data yourself in your own words, short, and link to the full document instead of pasting it.
 
 ## Decision page
 
@@ -67,7 +67,7 @@ Data fields (`decision.html`):
 - `question`: string. `recommendation`: `{text, reasons[]}`.
 - `options[]`: `{name, what, gives, costs, changes, reversibility, recommended, ratings[]}`. `reversibility` is `easy`, `costly` or `none`. `ratings` has one entry per criterion.
 - `criteria[]`: three to five criterion names.
-- `decisions[]`: `{name, question, choices[], advice, otherwise}`. The number is the position. `advice` is one of `choices`; without `choices` it is yes or no. When the decision is only which option, make it decision 1 with the option names as `choices`.
+- `decisions[]`: `{name, question, choices[], advice, otherwise}`. The number is the position. `advice` must equal one of `choices` exactly (a mismatch shows a warning and pre-selects nothing); without `choices` they are "tak" and "nie". When the decision is only which option, make it decision 1 with the option names as `choices`.
 - `steps[]`: `{who, text, you}`; `you: true` marks the operator's own step.
 - `risks[]`, `unknowns[]`: strings.
 - `reply`: `{template}`, a sentence containing `{choices}`, which becomes "1 tak, 2 nie".

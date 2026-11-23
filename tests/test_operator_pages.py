@@ -148,6 +148,17 @@ class ExamplesAndDocsTest(unittest.TestCase):
         for value in ("easy", "costly", "none", "done", "doing", "blocked", "waiting", "REPLACE_ME"):
             self.assertIn(value, skill_md, value)
 
+    def test_skill_tells_writers_to_escape_a_less_than_sign_with_the_real_escape(self):
+        # The escape is built from a character code so no tool that decodes escapes can turn it into a bare "<".
+        skill_md = (SKILL / "SKILL.md").read_text(encoding="utf8")
+        self.assertIn("write every `<` as `" + chr(92) + "u003c`", skill_md)
+
+    def test_example_decision_one_uses_the_exact_option_names_as_choices(self):
+        data = json.loads(EXAMPLES["decision"].read_text(encoding="utf8"))
+        self.assertEqual(data["decisions"][0]["choices"], [o["name"] for o in data["options"]])
+        for decision in data["decisions"]:
+            self.assertIn(decision["advice"], decision["choices"])
+
     def test_skill_is_listed_in_the_root_documents(self):
         for doc in ("README.md", "INSTALLATION.md"):
             self.assertIn("operator-pages", (ROOT / doc).read_text(encoding="utf8"), doc)
@@ -226,15 +237,31 @@ class TemplateRenderTest(TmpCase):
             self.assertIn(opt["name"], out["text"])
         for crit in data["criteria"]:
             self.assertIn(crit, out["text"])
-        self.assertEqual(out["sentence"], "Kopie zapasowe: 1 dysk i chmura, 2 tak, 3 tak")  # the advice is pre-selected
-        self.assertEqual(out["afterChange"], "Kopie zapasowe: 1 tylko dysk, 2 tak, 3 tak")
+        self.assertEqual(out["sentence"], "Kopie zapasowe: 1 Dysk plus chmura, 2 tak, 3 tak")  # the advice is pre-selected
+        self.assertEqual(out["afterChange"], "Kopie zapasowe: 1 Tylko drugi dysk, 2 tak, 3 tak")
         self.assertEqual(out["copied"], out["afterChange"], "the button copies what the box shows")
         self.assertEqual(out["links"], ["https://example.org/propozycja"])
 
     def test_decision_page_without_a_choices_token_still_returns_the_choices(self):
         data = self.example("decision")
         data["reply"] = {"template": "Moja odpowiedź:"}
-        self.assertEqual(self.render("decision", data)["sentence"], "Moja odpowiedź: 1 dysk i chmura, 2 tak, 3 tak")
+        self.assertEqual(self.render("decision", data)["sentence"], "Moja odpowiedź: 1 Dysk plus chmura, 2 tak, 3 tak")
+
+    def test_advice_that_matches_no_choice_is_flagged_and_never_replaced_by_another_choice(self):
+        data = self.example("decision")
+        data["decisions"][1]["advice"] = "Tak"  # choices are "tak" and "nie"
+        out = self.render("decision", data)
+        self.assertIn("Rada nie pasuje do żadnej opcji", out["text"])
+        self.assertEqual(out["sentence"], "Kopie zapasowe: 1 Dysk plus chmura, 2 (wybierz), 3 tak")
+
+    def test_null_entries_in_the_arrays_are_skipped_instead_of_stopping_the_page(self):
+        data = self.example("decision")
+        for key in ("options", "decisions", "steps", "details"):
+            data[key].insert(1, None)
+        out = self.render("decision", data)
+        self.assertIn("Jak odpowiedzieć", out["text"])
+        self.assertIn("Szczegóły", out["text"])
+        self.assertEqual(out["sentence"], "Kopie zapasowe: 1 Dysk plus chmura, 2 tak, 3 tak")
 
     def test_unsafe_values_stay_text_and_only_https_links_are_drawn(self):
         hostile = "<img src=x onerror=alert(1)>"

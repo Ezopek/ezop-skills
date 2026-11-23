@@ -78,6 +78,7 @@ button { min-height: 44px; padding: 8px 24px; margin: 8px 12px 0 0; font: inheri
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = String(text); return e; };
   const put = (parent, ...kids) => { kids.forEach(k => { if (k) parent.appendChild(k); }); return parent; };
   const list = x => (Array.isArray(x) ? x : []);
+  const objs = x => list(x).filter(v => v && typeof v === "object");
   const str = x => (x == null ? "" : String(x));
   const fail = msg => { app.textContent = ""; app.appendChild(el("p", "card bad", msg)); };
   const anchor = (label, url) => {
@@ -99,7 +100,7 @@ button { min-height: 44px; padding: 8px 24px; margin: 8px 12px 0 0; font: inheri
   if (!data || typeof data !== "object" || data.template === "REPLACE_ME") return fail("Szablon bez danych: podmień blok JSON.");
   app.textContent = "";
 
-  const picked = [], decs = list(data.decisions);
+  const picked = [], decs = objs(data.decisions);
   let box = null;
   const sentence = () => {
     const choices = decs.map((d, i) => (i + 1) + " " + picked[i]).join(", ");
@@ -114,7 +115,7 @@ button { min-height: 44px; padding: 8px 24px; margin: 8px 12px 0 0; font: inheri
   const rec = data.recommendation || {};
   put(section("Rekomendacja"), put(el("div", "card rec"), el("p", null, rec.text), ul(rec.reasons)));
 
-  const opts = list(data.options);
+  const opts = objs(data.options);
   if (opts.length) {
     const s = section("Opcje");
     opts.forEach(o => {
@@ -148,9 +149,11 @@ button { min-height: 44px; padding: 8px 24px; margin: 8px 12px 0 0; font: inheri
     const s = section("Decyzje do podjęcia");
     decs.forEach((d, i) => {
       const choices = list(d.choices).length ? list(d.choices).map(str) : ["tak", "nie"];
-      picked[i] = choices.includes(d.advice) ? d.advice : choices[0];
+      const advised = choices.includes(d.advice);
+      picked[i] = advised ? d.advice : "(wybierz)";
       const f = put(el("fieldset"), el("legend", null, (i + 1) + ". " + str(d.name)));
       if (d.question) f.appendChild(el("p", null, d.question));
+      if (!advised) f.appendChild(el("p", "chip bad", "Rada nie pasuje do żadnej opcji: wybierz ręcznie."));
       choices.forEach(c => {
         const inp = el("input");
         inp.type = "radio"; inp.name = "d" + i; inp.checked = c === picked[i];
@@ -162,7 +165,7 @@ button { min-height: 44px; padding: 8px 24px; margin: 8px 12px 0 0; font: inheri
     });
   }
 
-  const steps = list(data.steps);
+  const steps = objs(data.steps);
   if (steps.length) {
     const ol = el("ol");
     steps.forEach(st => {
@@ -198,7 +201,7 @@ button { min-height: 44px; padding: 8px 24px; margin: 8px 12px 0 0; font: inheri
   put(reply, el("p", "muted", "Wklej to zdanie w czacie albo napisz „wszystko jak radzisz”. Strona niczego nie wysyła."), box, btn, msg);
   refresh();
 
-  const det = list(data.details), more = data.link ? anchor(str(data.link.label) || "Pełna propozycja", data.link.url) : null;
+  const det = objs(data.details), more = data.link ? anchor(str(data.link.label) || "Pełna propozycja", data.link.url) : null;
   if (det.length || more) {
     const s = section("Szczegóły");
     det.forEach(d => s.appendChild(put(el("details"), el("summary", null, d.title), el("p", null, d.text))));
