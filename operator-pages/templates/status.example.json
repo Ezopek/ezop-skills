@@ -1,0 +1,35 @@
+{
+  "title": "Migracja usług",
+  "updated": "2026-11-24 09:30",
+  "items": [
+    {
+      "name": "Serwer plików",
+      "state": "waiting",
+      "next": "Zdecyduj, czy wyłączyć stary serwer w piątek.",
+      "who": "Ty",
+      "changed": "2026-11-24",
+      "url": "https://example.org/serwer-plikow"
+    },
+    {
+      "name": "Poczta",
+      "state": "doing",
+      "next": "Przeniesienie skrzynek, 3 z 5 gotowe.",
+      "who": "Asystent",
+      "changed": "2026-11-24"
+    },
+    {
+      "name": "Kopie zapasowe",
+      "state": "blocked",
+      "next": "Czeka na klucz szyfrujący.",
+      "who": "Ty",
+      "changed": "2026-11-23"
+    },
+    {
+      "name": "Drukarka sieciowa",
+      "state": "done",
+      "next": "Nic do zrobienia.",
+      "who": "Asystent",
+      "changed": "2026-11-22"
+    }
+  ]
+}

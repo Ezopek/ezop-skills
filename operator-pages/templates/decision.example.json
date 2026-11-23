@@ -1,0 +1,82 @@
+{
+  "title": "Kopie zapasowe",
+  "updated": "2026-11-24 09:30",
+  "question": "Gdzie trzymać nocne kopie zapasowe? Od tego zależy, czy w piątek można wyłączyć stary dysk.",
+  "recommendation": {
+    "text": "Polecam drugi dysk w szafie plus kopię szyfrowaną w chmurze.",
+    "reasons": [
+      "Dysk odtwarza dane w minuty, a chmura chroni przed pożarem lub kradzieżą.",
+      "Miesięczny koszt to kilka złotych.",
+      "Każdą z dwóch części da się później wyłączyć osobno."
+    ]
+  },
+  "options": [
+    {
+      "name": "Tylko drugi dysk",
+      "what": "Nocna kopia na dysk w tej samej szafie.",
+      "gives": "Szybkie odtworzenie, zero kosztów miesięcznych.",
+      "costs": "Nie chroni przed pożarem ani kradzieżą.",
+      "changes": "Nic, poza wymianą dysku raz na kilka lat.",
+      "reversibility": "easy",
+      "ratings": ["minuty", "niska", "żadna"]
+    },
+    {
+      "name": "Dysk plus chmura",
+      "what": "Dysk w szafie i szyfrowana kopia w chmurze.",
+      "gives": "Szybkie odtworzenie i ochrona przed utratą całego miejsca.",
+      "costs": "Kilka złotych miesięcznie i klucz szyfrujący do przechowania.",
+      "changes": "Raz zapisujesz klucz szyfrujący w bezpiecznym miejscu.",
+      "reversibility": "costly",
+      "recommended": true,
+      "ratings": ["minuty", "niska", "pełna"]
+    },
+    {
+      "name": "Tylko chmura",
+      "what": "Wyłącznie szyfrowana kopia w chmurze.",
+      "gives": "Brak sprzętu do pilnowania.",
+      "costs": "Odtworzenie trwa godziny. Utrata klucza oznacza utratę kopii.",
+      "changes": "Ten sam klucz szyfrujący co wyżej, ale bez zapasu na dysku.",
+      "reversibility": "none",
+      "ratings": ["godziny", "średnia", "pełna"]
+    }
+  ],
+  "criteria": ["Czas odtworzenia", "Koszt", "Ochrona przed pożarem"],
+  "decisions": [
+    {
+      "name": "Wybór opcji",
+      "question": "Którą opcję wybierasz?",
+      "choices": ["tylko dysk", "dysk i chmura", "tylko chmura"],
+      "advice": "dysk i chmura",
+      "otherwise": "Plan zmienia się tylko w części o chmurze."
+    },
+    {
+      "name": "Szyfrowanie",
+      "question": "Szyfrować kopię, zanim wyjdzie z domu?",
+      "choices": ["tak", "nie"],
+      "advice": "tak",
+      "otherwise": "Kopia w chmurze jest czytelna dla dostawcy."
+    },
+    {
+      "name": "Stary dysk",
+      "question": "Wyłączyć stary dysk w piątek?",
+      "choices": ["tak", "nie"],
+      "advice": "tak",
+      "otherwise": "Zostaje drugi punkt awarii i dalsze koszty prądu."
+    }
+  ],
+  "steps": [
+    { "who": "Ty", "text": "Zapisz klucz szyfrujący w menedżerze haseł.", "you": true },
+    { "who": "Asystent", "text": "Skonfiguruje nocne zadanie i pierwszą kopię." },
+    { "who": "Asystent", "text": "Sprawdzi odtworzenie jednego pliku i napisze wynik." }
+  ],
+  "risks": [
+    "Utrata klucza szyfrującego oznacza utratę kopii w chmurze.",
+    "Pierwsza kopia przez łącze domowe potrwa kilka dni."
+  ],
+  "unknowns": ["Dokładny miesięczny koszt zależy od rozmiaru danych."],
+  "reply": { "template": "Kopie zapasowe: {choices}" },
+  "details": [
+    { "title": "Jak liczone są koszty", "text": "Rozmiar danych razy cena za gigabajt u wybranego dostawcy." }
+  ],
+  "link": { "label": "Pełna propozycja", "url": "https://example.org/propozycja" }
+}
