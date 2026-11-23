@@ -53,7 +53,7 @@ For teams that run coordinated work in [Paperclip](https://github.com/paperclipa
 - **Reads are free, comments wake agents.** It follows work by reading and comments only to deliver your input. It never comments on finished work, which would reopen it.
 - **Decisions stay yours.** It relays your answers in your words, and gives you a short card for anything you do yourself: a deploy, an apply, a command on a host.
 - **Reserved steps stay yours.** It carries out a deploy, a release or an admin change only when you ask, or under a standing grant recorded for the product. It hands any change to the orchestrator itself to the orchestrator's maintainer.
-- **Honest continuation.** Nothing wakes the assistant when a request finishes. It says so, and reads the task again before it speaks about it.
+- **Honest continuation.** Unless the environment says Paperclip events reach the assistant, nothing wakes it when a request finishes; it says so, and reads the task again before it speaks about it. Requests filed from Claude Code end with a line naming the session (id, name, host) so events can find it.
 - **Environment facts live elsewhere.** The instance, the agents, the project map and the onboarding runbook come from your team's knowledge base. The skill only points there.
 
 It needs a reachable Paperclip MCP server. Without one it stops and says so.
