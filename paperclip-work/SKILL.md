@@ -61,7 +61,7 @@ Where the environment keeps a record for each product in its knowledge base (dir
 5. **Relay decisions; do not make them.**
    - Post the operator's answer in their words, once, on the issue where the question was asked.
    - Product and scope questions go to the operator with the Coordinator's options and your recommendation. Technical questions belong to the Coordinator and are not passed up, unless the request reserves them to the operator.
-   - The choice between a design report's options is the operator's, although it is technical. Give them the recommendation, the options and where the full proposal is, and relay their answer. Never choose for them. When the report has three or more options, present it as a decision page (see "When an event wakes you", item 4).
+   - The choice between a design report's options is the operator's, although it is technical. Give them the recommendation, the options and where the full proposal is, and relay their answer. Never choose for them. Whenever you relay a design report with three or more options or three or more decisions, related or not, present it as a decision page (the `operator-pages` skill's template if installed, otherwise Markdown), then ask with a card that names every decision. Never relay it only as a chat list or a card that gives just a count.
    - Approvals are decided in Paperclip's UI, not through MCP: give the operator the link.
 6. **Be honest about continuation.**
    - Unless the environment's Paperclip entry says that Paperclip events reach you, nothing wakes you when a request finishes. Then say so, for example: "Filed as EZO-12. I am not notified; ask me, or watch the notification channel."
@@ -99,7 +99,7 @@ Some environments forward Paperclip events to you: something needs attention (a 
    - Do only the runbook's repairs yourself. Changes to hosts, agents or tools stay with the operator.
 4. **A finished request:**
    - Check it at the source (rule 2), and do not comment on it (rule 4).
-   - When the result is a design report with three or more options or three or more related decisions, present it as a decision page (the `operator-pages` skill's template if installed, otherwise Markdown), then ask with a card that names every decision. Never relay it only as a chat list or a card that gives just a count.
+   - A design report with three or more options or decisions is relayed as a decision page, as rule 5 says.
    - Report to the operator: what changed, their actions as a card (rule 7), and, when there is a product record, the next stage from it. Ask what comes next, unless a standing grant in the record covers the next stage; then file it and name the grant.
    - Put what you find missing while checking into one follow-up request, not one request for each gap.
    - If the record should change (a stage reached, a new goal), propose it in one line and write it only once they agree.
@@ -110,7 +110,7 @@ Some environments forward Paperclip events to you: something needs attention (a 
 
 Use `paperclip_create_task` with:
 - `assigneeAgentId`: the Coordinator, from `paperclip_list_agents`;
-- `projectId`: always, from `paperclip_list_projects`, following the environment's project map: for work on a product, code or not, the project of the product's main repository; for work that belongs to no product, the project the map names for such work. In Claude Code, events about a request follow its marker line (its last line, see below) to the conversation that filed it; a channel route, where an environment has one, goes by project, so a request without a project reaches no such channel and nobody who follows it up there. If no project fits, ask the operator; never file without one;
+- `projectId`: always, from `paperclip_list_projects`, following the environment's project map: for work on a product, code or not, the project of the product's main repository; for work that belongs to no product, the project the map names for such work. In Claude Code, where the environment's Paperclip entry says events reach Claude Code sessions (rule 6), events about a request follow its marker line (its last line, see below) to the conversation that filed it; a channel route, where an environment has one, goes by project, so a request without a project reaches no such channel. Where events reach no Claude Code session, a request without a project reaches nobody who follows it up. If no project fits, ask the operator; never file without one;
 - `requestId`: a new UUID; retry an uncertain call with the same UUID and the same arguments;
 - `title`: `<product or project>: <outcome>`, unique.
 
@@ -159,7 +159,7 @@ Leave out delivery steps; the agents know them. Every "done when" item must be s
 ## Onboarding or migrating a project
 
 Follow the onboarding runbook named in the environment's Paperclip entry. If there is none, stop and say so.
-- A project can be created without a channel. Events reach the Claude Code conversation that filed a request through the request's marker line, not by project. A per-project channel route is needed only where the environment's Paperclip entry says a parallel channel still requires one; then that route comes first, because without it the parallel copy of the project's events falls back to the environment's general route, where it has one, or reaches nobody.
+- Where the environment's Paperclip entry says events reach Claude Code sessions (rule 6), a project can be created without a channel: events reach the Claude Code conversation that filed a request through the request's marker line, not by project. A per-project channel route is then needed only where the entry says a parallel channel still requires one; without it that parallel copy of the project's events falls back to the environment's general route, where it has one, or reaches nobody. Where events reach no Claude Code session, a per-project route to the project's channel is still required, and it comes first: until it exists, the project's events reach nobody who follows them up.
 - A repository's bootstrap is its gate workflow alone. If it needs more, or its first run fails, stop and file the bootstrap as a request to the Coordinator.
 - Some operations do not fit the agents' delivery: moving an upstream mirror, merging an upstream release, cutting a release, an admin change. Each one becomes a procedure written in that repository. The operator or a delegate they name carries it out, and the agents prepare its inputs. Never ask for a repository-specific mode in the agents' instructions.
 
